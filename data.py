@@ -62,19 +62,25 @@ def comida():
 @login_required
 def deporte():
     if request.method == 'POST':
-        tim = request.form['tim']
-        deporte = request.form['deporte']
         fecha = request.form['fecha']
-        hora = request.form['hora']
-
-        user_id = session.get('user_id')
-
+        deporte = request.form['deporte']
         db, c = get_db()
-        
+        error = None
         c.execute(
-            'insert into reserva_deporte (tim, deporte, fecha, hora) values (%s, %s, %s, %s)', (tim, deporte, fecha, hora)
+            'select id from deporte where identificador_deporte = %s', (deporte,)
         )
-        db.commit()
+        id_deporte = c.fetchone()
+        c.execute(
+            'select * from zona where id_deporte = %s', (id_deporte,)
+        )
+        zona = c.fetchone()
+        c.execute(
+            'select * from reserva_deporte where fecha = %s', (fecha,)
+        )
+        reserva_deporte = c.fetchone()
+
+        if reserva_deporte is not None:
+            error = ''
 
         return redirect(url_for('main.menu'))
 

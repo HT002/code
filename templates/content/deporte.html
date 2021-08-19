@@ -16,8 +16,6 @@ Deporte
                 <p>Aquí puedes reservar las instalaciones deportivas de la ACLOG seleccionando el deporte que quieres practicar.</p>
                 <p>El horario es de 16:00 a 21:00.</p>
                 <form class="form" method="POST">
-                    <label for="tmi">TIM:</label> <br>
-                    <input class="dato" name="tim" id="tim" value="{{ g.personal['tim'] }}" readonly> <br>
                     <label for="fecha">Fecha:</label> <br>
                     <input class="dato" type="datetime-local" name="fecha" id="fecha" required> <br>
                     <label for="deporte">Deporte:</label> <br>
@@ -29,14 +27,6 @@ Deporte
                         <option value="voley">Vóley playa</option>
                         <option value="polideportivo">Polideportivo</option>
                         <option value="gimnasio">Gimnasio</option>
-                    </select> <br>
-                    <label for="hora">Hora:</label> <br>
-                    <select class="dato" name="hora" id="hora" required>
-                        <option>16:00</option>
-                        <option>17:00</option>
-                        <option>18:00</option>
-                        <option>19:00</option>
-                        <option>20:00</option>
                     </select> <br>
                     <input type="submit" class="btn" value="Enviar">
                 </form>
