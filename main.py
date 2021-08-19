@@ -20,9 +20,9 @@ def mail():
 
     if request.method == 'POST':
         send_mail(name, email, message)
-        return render_template('main/send_mail.html')
+        return redirect(url_for('main.sugerencia_enviada'))
 
-    return redirect(url_for('main.index'))
+    return render_template('content/suggest.html')
 
 def send_mail(name, email, message):
     mi_email = 'rubns_73@hotmail.com'
@@ -45,15 +45,11 @@ def send_mail(name, email, message):
     mail = Mail(mi_email, to_email, 'Nuevo contacto desde la web', html_content=html_content)
     response = sg.client.mail.send.post(request_body=mail.get())
 
-@bp.route('/principal', methods=['GET'])
-@login_required
-def start():
-    return render_template('content/start.html')
 
-@bp.route('/sugerencias', methods=['GET'])
+@bp.route('/Sugerencia enviada', methods=['GET'])
 @login_required
-def sugerencias():
-    return render_template('content/suggest.html')
+def sugerencia_enviada():
+    return render_template('main/send_mail.html')
 
 @bp.route('/orden', methods=['GET'])
 @login_required
