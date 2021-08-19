@@ -71,17 +71,20 @@ def deporte():
         )
         id_deporte = c.fetchone()
         c.execute(
-            'select * from zona where id_deporte = %s', (id_deporte,)
+            'select id from zona where id_deporte = %s', (id_deporte,)
         )
-        zona = c.fetchone()
+        id_zona = c.fetchall()
         c.execute(
-            'select * from reserva_deporte where fecha = %s', (fecha,)
+            'select zona.id, reserva_deporte.fecha from zona inner join reserva_deporte on zona.id = reserva_deporte.id_zona where id_zona = %s', (id_zona,)
         )
-        reserva_deporte = c.fetchone()
+        reservas = c.fetchall()
 
-        if reserva_deporte is not None:
-            error = ''
+        if error is None:
+            c.execute(
 
-        return redirect(url_for('main.menu'))
+            )
+            return redirect(url_for('main.index'))
+    
+        flash(error)
 
     return render_template('content/deporte.html')

@@ -17,7 +17,7 @@ Deporte
                 <p>El horario es de 16:00 a 21:00.</p>
                 <form class="form" method="POST">
                     <label for="fecha">Fecha:</label> <br>
-                    <input class="dato" type="datetime-local" name="fecha" id="fecha" required> <br>
+                    <input class="dato" name="fecha" id="fecha" required> <br>
                     <label for="deporte">Deporte:</label> <br>
                     <select class="dato" name="deporte" id="deporte" required>
                         <option value="padel">Padel</option>
@@ -37,4 +37,18 @@ Deporte
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" type="text/css" href="/static/js/datetimepicker/jquery.datetimepicker.css"/ >
+<script src="/static/js/datetimepicker/jquery.js"></script>
+<script src="/static/js/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+<script>
+    $.datetimepicker.setLocale('es');
+    $('#fecha').datetimepicker({
+        format:'Y/m/d H:00',
+        minDate:0,
+        minTime:'16:00',
+        maxTime:'21:00'
+    });
+</script>
+
 {% endblock %}
