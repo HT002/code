@@ -30,15 +30,6 @@ def init_db():
 
     db.commit()
 
-def get_tim(user_id):
-    db, c = get_db()
-    c.execute(
-        'select p.tim from user u inner join personal p on p.id = u.id_personal where u.id = %s', (user_id,)
-    ) 
-    tim = c.fetchone()   
-    return tim
-
-
 @click.command('init-db')
 @with_appcontext
 def init_db_command():

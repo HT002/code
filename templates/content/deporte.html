@@ -17,18 +17,18 @@ Deporte
                 <p>El horario es de 16:00 a 21:00.</p>
                 <form class="form" method="POST">
                     <label for="tmi">TIM:</label> <br>
-                    <input class="dato" name="tim" id="tim" value="tim" readonly /> <br>
+                    <input class="dato" name="tim" id="tim" value="{{ g.personal['tim'] }}" readonly> <br>
                     <label for="fecha">Fecha:</label> <br>
-                    <input class="dato" type="datetime" name="fecha" id="fecha" required> <br>
+                    <input class="dato" type="datetime-local" name="fecha" id="fecha" required> <br>
                     <label for="deporte">Deporte:</label> <br>
                     <select class="dato" name="deporte" id="deporte" required>
                         <option value="padel">Padel</option>
-                        <option>Tenis</option>
-                        <option>Fútbol</option>
-                        <option>Baloncesto</option>
-                        <option value="volley_playa">Vóley playa</option>
-                        <option>Polideportivo</option>
-                        <option>Gimnasio</option>
+                        <option value="tenis">Tenis</option>
+                        <option value="futbol">Fútbol</option>
+                        <option value="baloncesto">Baloncesto</option>
+                        <option value="voley">Vóley playa</option>
+                        <option value="polideportivo">Polideportivo</option>
+                        <option value="gimnasio">Gimnasio</option>
                     </select> <br>
                     <label for="hora">Hora:</label> <br>
                     <select class="dato" name="hora" id="hora" required>
