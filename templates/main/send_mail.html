@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Enviado
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <div class="left">
+            <h1>¡Gracias!</h1>
+            <h2>Agradecemos que nos ayudes a mejorar.</h2>
+            <p>Su sugerencia ha sido enviada con éxito.</p>
+        </div>
+        <div class="right vert-pad">
+            <img src="{{ url_for('static',  filename='correo.png') }}" width="400px" />
+        </div>
+    </div>
+</div>
+{% endblock %}

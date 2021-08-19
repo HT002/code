@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sugerencias
+{% endblock %}
+
+{% block content %}
+<div class="center padded">
+    <div class="content vs-menu">
+        <div class="row vert-pad">
+            <div class="left padded">
+                <h1>¿Tienes alguna sugerencia?</h1>
+                <p>Nos encanta recibir nuevas propuestas o ideas que nos ayuden a mejorar esta web. Todas las ideas son recibidas y tenidas en cuenta en igualdad de condiciones. Si realmente pensamos que lo que nos propones es útil, te lo harémos saber con un mensaje de agradecimiento y con suerte... ¡la página actualizada!</p>
+            </div>
+            <div id="contacto" class="right padded">
+                <form class="contact-form" method="POST" action="{{ url_for('main.mail') }}" >
+                    <input class="full-width" name="name" placeholder="Nombre" required />
+                    <input class="full-width" name="email" placeholder="Correo" type="email" required />
+                    <textarea placeholder="Mensaje" name="message" required minlength="10"></textarea>
+                    <input type="submit" class="btn full-width" value="Enviar" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

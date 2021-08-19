@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+S. de Orden
+{% endblock %}
+
+{% block content %}
+<div class="center padded">
+    <div class="content vs-menu">
+        <div class="row vert-pad">
+            <div class="left padded">
+                <h1>Servicios de orden</h1>
+                <p>Les recordamos que estos servicios pueden ser modificados si el servicio lo requiere.</p>
+            </div>
+            <div id="contacto" class="right padded">
+                <img src="{{ url_for('static',  filename='orden.png') }}" width="650px" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

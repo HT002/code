@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Menu
+{% endblock %}
+
+{% block content %}
+<div class="center padded">
+    <div class="vs-menu content">
+        <div class="row vert-pad">
+            <div class="left padded">
+                <img src="{{ url_for('static',  filename='menu.png') }}" width="600px" />
+            </div>
+            <div id="contacto" class="right padded">
+                <h1>Menú semanal</h1>
+                <p>Este menú es modificado cada semana para ofrecer la mejor variedad a nuestros usuarios.</p>
+                <hr>
+                <h3>¿Necesitas un menú especial?</h3>
+                <p>Si por algún motivo necesitas una dieta especial ponte en contacto con:</p>
+                <p>Jefe de cocina</p>
+                <p>Tlf: 630 28 87 34</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

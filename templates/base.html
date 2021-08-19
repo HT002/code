@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %} - ACLOG</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/gif/png" href="{{ url_for('static',  filename='emblema.png') }}">
+
+<body>
+    <header>
+        <div class="logo"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static',  filename='emblema.png') }}" width="45px"></a>ACADEMIA DE LOGÍSTICA</div>
+        <nav>
+            <ul>
+                {% if g.user %}
+                    <li><span class="hola">Hola, {{ g.user['tim'] }}</span></li>
+                    <li class="dropdown"><a href="#">Comidas</a>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('main.menu') }}">Menú semanal</a><br/>
+                            <a href="{{ url_for('data.comida') }}">Apuntarse</a><br/>
+                        </div>
+                    </li>
+                    <li><a href="{{ url_for('data.deporte') }}">Deporte</a></li>
+                    <li class="dropdown"><a href="#">Servicios unidad</a>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('main.orden') }}">De orden</a><br/>
+                            <a href="{{ url_for('main.seguridad') }}">De seguridad</a><br/>
+                        </div>
+                    </li>
+                    <li><a href="{{ url_for('main.sugerencias') }}">Sugerencias</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Iniciar Sesión</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">Registrarse</a></li>
+                    <li><a href="#mapa">Localízanos</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <section>{% block content %}{% endblock %}</section>
+
+    <div class="footer">
+        <div class="center full-width">
+            <div class="row">
+                <h3>¿Quieres estar al día?</h3>
+            </div>
+        </div>
+        <div class="center full-width">
+            <div row>
+                <p>No te olvides de seguirnos en las redes sociales</p>
+            </div>
+        </div>
+        <div class="center full-width social-links">
+            <div class="row">
+                <a target="_blank" href="https://twitter.com/Defensagob"><img class="social" width="30" src="{{ url_for('static', filename='twitter.png') }}" /></a>
+                <a target="_blank" href="https://www.facebook.com/MinisterioDefensaESP/"><img class="social" width="30" src="{{ url_for('static', filename='facebook.png') }}" /></a>
+                <a target="_blank" href="https://es.linkedin.com/company/ejercito-de-tierra"><img class="social" width="30" src="{{ url_for('static', filename='linkedin.png') }}" /></a>
+            </div>
+        </div>
+        <div class="made-with">
+            <div class="row">
+                <img width="150" src="{{ url_for('static', filename='buner.png') }}" />
+            </div>
+        </div>
+    </div>
+</body>

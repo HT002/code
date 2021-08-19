@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Apuntarse
+{% endblock %}
+
+{% block content %}
+<div class="center padded">
+    <div class="vs-menu">
+        <div class="">
+            <h1 class="center">SERVICIO DE COMIDAS DE LA ACLOG</h1>
+            <h2 class="center">Semana del 16/08/21 al 22/08/21</h2>
+        </div>
+        <div class="padded center">
+           <form class="menu-form" method="POST">
+                <div class="row">
+                    <div class="day seven">
+                        <h3 class="center">Lunes</h3> <hr>
+                        <input type="checkbox" name="L1" id="L1" value="1">
+                        <label for="L1">Desayuno</label> <br>
+                        <input type="checkbox" name="L2" id="L2" value="1">
+                        <label for="L2">Comida</label> <br>
+                        <input type="checkbox" name="L3" id="L3"value="1">
+                        <label for="L3">Cena</label>
+                    </div>
+                    <div class="day seven" >
+                        <h3 class="center">Martes</h3> <hr>
+                        <input type="checkbox" name="M1" id="M1" value="1">
+                        <label for="M1">Desayuno</label> <br>
+                        <input type="checkbox" name="M2" id="M2" value="1">
+                        <label for="M2">Comida</label> <br>
+                        <input type="checkbox" name="M3" id="M3" value="1">
+                        <label for="M3">Cena</label>
+                    </div>
+                    <div class="day seven">
+                        <h3 class="center">Miércoles</h3> <hr>
+                        <input type="checkbox" name="X1" id="X1" value="1">
+                        <label for="X1">Desayuno</label> <br>
+                        <input type="checkbox" name="X2" id="X2" value="1">
+                        <label for="X2">Comida</label> <br>
+                        <input type="checkbox" name="X3" id="X3" value="1">
+                        <label for="X3">Cena</label>
+                    </div>
+                    <div class="day seven">
+                        <h3 class="center">Jueves</h3> <hr>
+                        <input type="checkbox" name="J1" id="J1" value="1">
+                        <label for="J1">Desayuno</label> <br>
+                        <input type="checkbox" name="J2" id="J2" value="1">
+                        <label for="J2">Comida</label> <br>
+                        <input type="checkbox" name="J3" id="J3" value="1">
+                        <label for="J3">Cena</label>
+                    </div>
+                    <div class="day seven">
+                        <h3 class="center">Viernes</h3> <hr>
+                        <input type="checkbox" name="V1" id="V1" value="1">
+                        <label for="V1">Desayuno</label> <br>
+                        <input type="checkbox" name="V2" id="V2" value="1">
+                        <label for="V2">Comida</label> <br>
+                        <input type="checkbox" name="V3" id="V3" value="1">
+                        <label for="V3">Cena</label>
+                    </div>
+                    <div class="day seven">
+                        <h3 class="center">Sábado</h3> <hr>
+                        <input type="checkbox" name="S1" id="S1" value="1">
+                        <label for="S1">Desayuno</label> <br>
+                        <input type="checkbox" name="S2" id="S2" value="1">
+                        <label for="S2">Comida</label> <br>
+                        <input type="checkbox" name="S3" id="S3" value="1">
+                        <label for="S3">Cena</label>
+                    </div>
+                    <div class="day seven">
+                        <h3 class="center">Domingo</h3> <hr>
+                        <input type="checkbox" name="D1" id="D1" value="1">
+                        <label for="D1">Desayuno</label> <br>
+                        <input type="checkbox" name="D2" id="D2" value="1">
+                        <label for="D2">Comida</label> <br>
+                        <input type="checkbox" name="D3" id="D3" value="1">
+                        <label for="D3">Cena</label>
+                    </div>
+                    <input type="text" placeholder="tim" name="tim" id="tim">
+                </div>
+                <div class="row center">
+                    <input class="special center" type="submit" value="Enviar">
+                    <input class="special center" type="reset">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
