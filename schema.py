@@ -7,6 +7,7 @@ instructions = [
     """
         CREATE TABLE user (
             id INT PRIMARY KEY AUTO_INCREMENT,
+            correo varchar(50) NOT NULL UNIQUE,
             password VARCHAR(500) NOT NULL,
             id_personal INT NOT NULL UNIQUE,
             FOREIGN KEY (id_personal) REFERENCES personal(id)

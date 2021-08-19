@@ -20,37 +20,34 @@ def register():
         db, c = get_db()
         error = None
         c.execute(
-            'select id from user where tim = %s', (tim,)
+            'select * from personal where tim = %s', (tim,)
         )
+        personal = c.fetchone()
         if not correo:
             error = 'Correo corporativo es requerido'
         if not tim:
             error = 'TIM es requerida'
         if not password:
             error = 'Contraseña es requerida'
-        elif c.fetchone() is not None:
-            error = 'El usuario con TIM {} ya existe.'.format(tim)
-
-        c.execute(
-            'select tim from personal where tim = %s', (tim,)
-        )
-        if c.fetchone() is None:
-            error = 'La TMI {} no consta en base de datos corporativa.'.format(tim)
+        if personal is None:
+            error = 'La TIM {} no consta en base de datos de la unidad.'.format(tim)
+        elif not(correo == personal['correo']):
+            error = 'El correo corporativo {} no consta en la base de datos de la unidad.'.format(correo)
         
         c.execute(
-            'select email from correo where email = %s', (correo,)
+            'select id from user where id_personal = %s', (personal['id'],)
         )
-        if c.fetchone() is None:
-            error = 'El correo {} no consta en la base de datos corporativa.'.format(correo)
-
+        if c.fetchone() is not None:
+            error = 'Ya existe un usuario registrado con ese correo corporativo.'
+        
         if error is None:
             c.execute(
-                'insert into user (tim, password) values (%s, %s)', (tim, generate_password_hash(password))
+                'insert into user (correo, password, id_personal) values (%s, %s, %s)', (correo, generate_password_hash(password), personal['id'])
             )
             db.commit()
 
             c.execute(
-            'select * from user where tim = %s', (tim,)
+                'select * from user where id_personal = %s', (personal['id'],)
             )
             user = c.fetchone()
             session.clear()
@@ -64,12 +61,12 @@ def register():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        tim = request.form['tim']
+        correo = request.form['correo']
         password = request.form['password']
         db, c = get_db()
         error = None
         c.execute(
-            'select * from user where tim = %s', (tim,)
+            'select * from user where correo = %s', (correo,)
         )
         user = c.fetchone()
 
@@ -99,6 +96,11 @@ def load_logged_in_user():
             'select * from user where id = %s', (user_id,)
         )
         g.user = c.fetchone()
+
+        c.execute(
+            'select * from personal where id = %s', (g.user['id_personal'],)
+        )
+        g.personal = c.fetchone()
            
 def login_required(view):
     @functools.wraps(view)
