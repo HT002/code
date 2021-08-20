@@ -62,6 +62,7 @@ def comida():
 @login_required
 def deporte():
     if request.method == 'POST':
+        user_id = g.user['id']
         fecha = request.form['fecha']
         deporte = request.form['deporte']
         db, c = get_db()
@@ -70,8 +71,7 @@ def deporte():
         c.execute(
             """
             select 
-                z.id as id_zona, 
-                d.id as id_deporte
+                z.id as id_zona
             from deporte d 
             inner join zona z on z.id_deporte = d.id
             where 
@@ -83,11 +83,13 @@ def deporte():
                 )
             """, (deporte, fecha)
         )
-        reservas_disponibles = c.fetchone()
-        if reservas_disponibles is None:
+        id_zona_libre = c.fetchone()
+        if id_zona_libre is None:
             error = 'Esa hora ya ha sido reservada.'
         else:
-
+            c.execute(
+                'insert into reserva_deporte (fecha, id_user, id_zona) values (%s, %s, %s)', (str(fecha), user_id, id_zona_libre)
+            )
             return redirect(url_for('main.index'))
     
         flash(error)

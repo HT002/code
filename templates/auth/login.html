@@ -9,7 +9,7 @@ Login
     <div class="hero-content">
         <div class="left">
             <div id="contacto" class="left padded">
-                <form class="form" method="POST">
+                <form class="form" method="POST" autocomplete="off">
                     <input type="email" class="dato" placeholder="Correo corporativo" name="correo" id="correo" required />
                     <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" required /> <br>
                     <input type="submit" class="btn" value="Iniciar sesión">
@@ -20,7 +20,7 @@ Login
             </div>
         </div>
         <div class="right vert-pad">
-            <img src="{{ url_for('static',  filename='login.png') }}" width="600px" />
+            <img src="{{ url_for('static',  filename='imagen/login.png') }}" width="600px" />
         </div>
     </div>
 </div>

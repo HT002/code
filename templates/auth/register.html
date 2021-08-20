@@ -9,7 +9,7 @@ Registro
     <div class="hero-content">
         <div class="left">
             <div id="contacto" class="left padded">
-                <form class="form" method="POST">
+                <form class="form" method="POST" autocomplete="off">
                     <input type="email" class="dato" placeholder="Correo corporativo" name="correo" id="correo" required />
                     <input class="dato" placeholder="TIM" name="tim" id="tim" maxlength="7" required />
                     <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="El tamaño mínimo es 8, debes incluir al menos un número, una minúscula y una mayuscula." required /> <br>
@@ -21,7 +21,7 @@ Registro
             </div>
         </div>
         <div class="right vert-pad">
-            <img src="{{ url_for('static',  filename='register.png') }}" width="450px" />
+            <img src="{{ url_for('static',  filename='imagen/register.png') }}" width="450px" />
         </div>
     </div>
 </div>

@@ -9,13 +9,15 @@ Deporte
     <div class="content vs-menu">
         <div class="row vert-pad">
             <div class="left padded">
-                <img src="{{ url_for('static',  filename='deporte.png') }}" width="500px" />
+                <img src="{{ url_for('static',  filename='imagen/deporte.png') }}" width="500px" />
             </div>
             <div id="contacto" class="right padded">
                 <h1>Deporte</h1>
                 <p>Aquí puedes reservar las instalaciones deportivas de la ACLOG seleccionando el deporte que quieres practicar.</p>
-                <p>El horario es de 16:00 a 21:00.</p>
-                <form class="form" method="POST">
+                <p>Horario: <br>
+                    Lunes a Viernes de 16:00 a 21:00 <br>
+                    Sábado y domingo de 9:00 a 21:00</p>
+                <form class="form" method="POST" autocomplete="off">
                     
                     <input class="dato" name="fecha" id="fecha" required> <br>
                     
@@ -24,7 +26,8 @@ Deporte
                         <option value="tenis">Tenis</option>
                         <option value="futbol">Fútbol</option>
                         <option value="baloncesto">Baloncesto</option>
-                        <option value="voley">Vóley playa</option>
+                        <option value="voley">Vóley</option>
+                        <option value="voley_playa">Vóley playa</option>
                         <option value="polideportivo">Polideportivo</option>
                         <option value="gimnasio">Gimnasio</option>
                     </select> <br>
