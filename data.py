@@ -66,18 +66,24 @@ def deporte():
         deporte = request.form['deporte']
         db, c = get_db()
         error = None
+
         c.execute(
-            'select id from deporte where identificador_deporte = %s', (deporte,)
+            """
+            select 
+                z.id as id_zona, 
+                d.id as id_deporte
+            from deporte d 
+            inner join zona z on z.id_deporte = d.id
+            where 
+                d.identificador_deporte = '%s' 
+                and z.id not in (
+                    select rd.id_zona
+                    from reserva_deporte rd
+                    where rd.fecha = '%s'
+                )
+            
+            """, (deporte, fecha)
         )
-        id_deporte = c.fetchone()
-        c.execute(
-            'select id from zona where id_deporte = %s', (id_deporte,)
-        )
-        id_zona = c.fetchall()
-        c.execute(
-            'select zona.id, reserva_deporte.fecha from zona inner join reserva_deporte on zona.id = reserva_deporte.id_zona where id_zona = %s', (id_zona,)
-        )
-        reservas = c.fetchall()
 
         if error is None:
             c.execute(
