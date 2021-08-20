@@ -42,8 +42,6 @@ Deporte
 <script src="/static/js/datetimepicker/jquery.js"></script>
 <script src="/static/js/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
 <script>
-    var lista_citas = JSON.parse("{{json_citas}}");
-
     var logic = function( currentDateTime ){
         if (( currentDateTime.getDay()==6 )  || ( currentDateTime.getDay()==0 )) {
             this.setOptions({

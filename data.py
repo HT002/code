@@ -81,14 +81,13 @@ def deporte():
                     from reserva_deporte rd
                     where rd.fecha = '%s'
                 )
-            
             """, (deporte, fecha)
         )
+        reservas_disponibles = c.fetchone()
+        if reservas_disponibles is None:
+            error = 'Esa hora ya ha sido reservada.'
+        else:
 
-        if error is None:
-            c.execute(
-
-            )
             return redirect(url_for('main.index'))
     
         flash(error)
