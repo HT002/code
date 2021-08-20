@@ -15,10 +15,10 @@ Página inicial
             {% else %}
                 <h1>¡Bienvenido!</h1>
                 <h1>A España servir hasta morir</h1>
-                <P>Página web para facilitar tu día a día militar. Queremos que tengas acceso a todos los servicios de tu cuartel desde cualquier parte.</P>
-                <p>¿Tienes cuenta? Inicia sesión o registrate para acceder a todo el contenido de la página.</p>
-                <a href="{{ url_for('auth.login') }}" class="btn">Iniciar sesión</a>
-                <a href="{{ url_for('auth.register') }}" class="btn">Registrarse</a>
+                <P>Página web para facilitar tu día a día militar. Queremos que tengas acceso a todos los servicios de tu cuartel desde cualquier parte. ¿Tienes cuenta? Inicia sesión o registrate en el menú superior para acceder a todo el contenido de la página.</P>
+                <h2>¿Sabes donde estamos?</h2>
+                <p>Haz click en el botón para ver la ubicación y los datos de contacto de la unidad.</p>
+                <a href="#mapa" class="btn">Localízanos</a>
             {% endif %}
         </div>
         <div class="right">
