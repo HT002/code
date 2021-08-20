@@ -31,5 +31,13 @@ instructions = [
             FOREIGN KEY (id_user) REFERENCES user(id),
             FOREIGN KEY (id_turno) REFERENCES turno(id)
         );
+    """,
+    """
+        CREATE TABLE sugerencia (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            id_user INT NOT NULL,
+            mensaje VARCHAR(500) NOT NULL, 
+            FOREIGN KEY (id_user) REFERENCES user(id)
+        );
     """
 ]

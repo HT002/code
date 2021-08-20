@@ -1,8 +1,9 @@
-from app.auth import login
-from app.auth import login_required
+from app.auth import login, login_required
+from app.db import get_db
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, current_app
+    Blueprint, render_template, request, redirect, url_for, current_app, g
 )
+
 import sendgrid
 from sendgrid.helpers.mail import *
 
@@ -14,12 +15,19 @@ def index():
 
 @bp.route('/mail', methods=['GET', 'POST'])
 def mail():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    message = request.form.get('message')
-
     if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+        db, c = get_db()
+
+        c.execute(
+            'insert into sugerencia (id_user, mensaje) values (%s, %s)', (g.user['id'], message)
+        )
+        db.commit()
+
         send_mail(name, email, message)
+
         return redirect(url_for('main.sugerencia_enviada'))
 
     return render_template('content/suggest.html')
