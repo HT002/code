@@ -12,8 +12,7 @@ Registro
                 <form class="form" method="POST">
                     <input type="email" class="dato" placeholder="Correo corporativo" name="correo" id="correo" required />
                     <input class="dato" placeholder="TIM" name="tim" id="tim" maxlength="7" required />
-                    <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="El tamaño mínimo es 8, debes incluir al menos un número, una minúscula y una mayuscula." required />
-
+                    <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="El tamaño mínimo es 8, debes incluir al menos un número, una minúscula y una mayuscula." required /> <br>
                     <input type="submit" class="btn" value="Registrarse">
                 </form>
                 {% for ms in get_flashed_messages() %}
