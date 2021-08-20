@@ -3,6 +3,7 @@ from app.auth import login_required
 
 import functools
 
+import datetime
 
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
@@ -83,12 +84,12 @@ def deporte():
                 )
             """, (deporte, fecha)
         )
-        id_zona_libre = c.fetchone()
-        if id_zona_libre is None:
+        zona_libre = c.fetchone()
+        if zona_libre is None:
             error = 'Esa hora ya ha sido reservada.'
         else:
             c.execute(
-                'insert into reserva_deporte (fecha, id_user, id_zona) values (%s, %s, %s)', (str(fecha), user_id, id_zona_libre)
+                'insert into reserva_deporte (fecha, id_user, id_zona) values (%s, %s, %s)', (fecha, user_id, zona_libre['id_zona'])
             )
             return redirect(url_for('main.index'))
     
