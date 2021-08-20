@@ -91,6 +91,7 @@ def deporte():
             c.execute(
                 'insert into reserva_deporte (fecha, id_user, id_zona) values (%s, %s, %s)', (fecha, user_id, zona_libre['id_zona'])
             )
+            db.commit()
             return redirect(url_for('main.index'))
     
         flash(error)
