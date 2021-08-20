@@ -30,19 +30,19 @@ def register():
         if not password:
             error = 'Contraseña es requerida'
         if personal is None:
-            error = 'La TIM {} no consta en base de datos de la unidad.'.format(tim)
+            error = 'La TIM "{}" no consta en la base de datos de la unidad.'.format(tim)
         elif not(correo == personal['correo']):
-            error = 'El correo corporativo {} no consta en la base de datos de la unidad.'.format(correo)
+            error = 'El correo corporativo "{}" no consta en la base de datos de la unidad.'.format(correo)
         
         c.execute(
             'select id from user where id_personal = %s', (personal['id'],)
         )
         if c.fetchone() is not None:
-            error = 'Ya existe un usuario registrado con ese correo corporativo.'
+            error = 'Ya existe un usuario registrado con ese correo y esa TIM.'
         
         if error is None:
             c.execute(
-                'insert into user (correo, password, id_personal) values (%s, %s, %s)', (correo, generate_password_hash(password), personal['id'])
+                'insert into user (password, id_personal) values (%s, %s)', (generate_password_hash(password), personal['id'])
             )
             db.commit()
 
@@ -66,14 +66,22 @@ def login():
         db, c = get_db()
         error = None
         c.execute(
-            'select * from user where correo = %s', (correo,)
+            """
+            select 
+                u.password,
+                u.id
+            from personal p 
+            inner join user u on u.id_personal = p.id
+            where 
+                p.tim = %s or p.correo = %s
+            """, (correo, correo)
         )
         user = c.fetchone()
 
         if user is None:
-            error = 'Usuario o contraseña incorrecto'
+            error = 'Credenciales de acceso incorrectas'
         elif not check_password_hash(user['password'], password):
-            error = 'Usuario o contraseña incorrecto'
+            error = 'Credenciales de acceso incorrectas'
         
         if error is None:
             session.clear()
@@ -90,6 +98,7 @@ def load_logged_in_user():
 
     if user_id is None:
         g.user = None
+        g.personal = None
     else:
         db, c = get_db()
         c.execute(

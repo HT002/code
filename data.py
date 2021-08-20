@@ -75,11 +75,11 @@ def deporte():
             from deporte d 
             inner join zona z on z.id_deporte = d.id
             where 
-                d.identificador_deporte = '%s' 
+                d.identificador_deporte = %s 
                 and z.id not in (
                     select rd.id_zona
                     from reserva_deporte rd
-                    where rd.fecha = '%s'
+                    where rd.fecha = %s
                 )
             """, (deporte, fecha)
         )
