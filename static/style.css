@@ -262,7 +262,7 @@ a.btn {
 }
 
 .hola {
-    color: rgb(226, 209, 55);
+    color: rgb(204, 191, 74);
 }
 
 .day {
@@ -281,7 +281,7 @@ a.btn {
 
 .menu-form div h3 {
     font-family: 'Rubik', sans-serif;
-    color: rgb(226, 209, 55);
+    color: rgb(204, 191, 74);
     font-size: 20px;
 }
 
@@ -296,7 +296,7 @@ a.btn {
 }
 
 .menu-form div input:checked + label{
-    color: rgb(226, 209, 55);
+    color: rgb(204, 191, 74);
 }
 
 .special {
