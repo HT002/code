@@ -23,6 +23,7 @@ def register():
             'select * from personal where tim = %s', (tim,)
         )
         personal = c.fetchone()
+
         if not correo:
             error = 'Correo corporativo es requerido'
         if not tim:
@@ -34,11 +35,12 @@ def register():
         elif not(correo == personal['correo']):
             error = 'El correo corporativo "{}" no consta en la base de datos de la unidad.'.format(correo)
         
-        c.execute(
-            'select id from user where id_personal = %s', (personal['id'],)
-        )
-        if c.fetchone() is not None:
-            error = 'Ya existe un usuario registrado con ese correo y esa TIM.'
+        if error is None:
+            c.execute(
+                'select id from user where id_personal = %s', (personal['id'],)
+            )
+            if c.fetchone() is not None:
+                error = 'Ya existe un usuario registrado con ese correo y esa TIM.'
         
         if error is None:
             c.execute(
