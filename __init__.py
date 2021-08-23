@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    db.init_app(app)
 
     app.config.from_mapping(
         SENDGRID_KEY=os.environ.get('SENDGRID_KEY'),
@@ -14,23 +15,17 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS=os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS'),
     )
 
-    db.init_app(app)
-
-    from .models import User
-
-    create_database(app)
-
+    from . import main
     from . import auth
-
-    app.register_blueprint(auth.bp)
-
     from . import data
 
+    app.register_blueprint(main.bp)
+    app.register_blueprint(auth.bp)
     app.register_blueprint(data.bp)
 
-    from . import main
+    from .models import Personal, User, Deporte, Zona, Dia_comida, Turno, Reserva_deporte, Reserva_comida, Sugerencia
 
-    app.register_blueprint(main.bp)
+    create_database(app)
 
     return app
 

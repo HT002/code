@@ -60,27 +60,27 @@ def register():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        correo = request.form['correo']
+        usuario = request.form['usuario']
         password = request.form['password']
         error = None
 
         my_personal = Personal.query.filter(or_(
-                Personal.correo==correo, Personal.tim==correo)
+                Personal.correo==usuario, Personal.tim==usuario)
         ).first()
         my_user = User.query.filter_by(id_personal=my_personal.id).first()
-        # raise Exception(my_user.id_Personal)
-            
-        
-        
-        
-        if my_personal is None:
+
+        if not usuario:
+            error = 'TIM o correo es requerido'
+        elif not password:
+            error = 'Contraseña es requerida'
+        elif my_user is None:
             error = 'Credenciales de acceso incorrectas'
-        elif not check_password_hash(User['password'], password):
+        elif check_password_hash(my_user.password, password):
             error = 'Credenciales de acceso incorrectas'
         
         if error is None:
             session.clear()
-            session['user_id'] = User['id']
+            session['user_id'] = my_user.id
             return redirect(url_for('main.index'))
 
         flash(error)
@@ -97,7 +97,6 @@ def load_logged_in_user():
     else:
 
         my_user = User.query.filter_by(id=user_id).first()
-        raise Exception(my_user.id_Personal)
         g.user = my_user
         g.Personal = my_user.id_Personal
         """
