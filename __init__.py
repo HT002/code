@@ -7,23 +7,18 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootttxd7@localhost/academia'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
-
-
     app.config.from_mapping(
         SENDGRID_KEY=os.environ.get('SENDGRID_KEY'),
         SECRET_KEY=os.environ.get('SECRET_KEY'),
-        DATABASE_HOST=os.environ.get('FLASK_DATABASE_HOST'),
-        DATABASE_USER=os.environ.get('FLASK_DATABASE_USER'),
-        DATABASE_PASSWORD=os.environ.get('FLASK_DATABASE_PASSWORD'),
-        DATABASE=os.environ.get('FLASK_DATABASE'),
+        SQLALCHEMY_DATABASE_URI=os.environ.get('SQLALCHEMY_DATABASE_URI'),
+        SQLALCHEMY_TRACK_MODIFICATIONS=os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS'),
     )
 
-    # from . import db
+    db.init_app(app)
 
-    # db.init_app(app)
+    from .models import User
+
+    create_database(app)
 
     from . import auth
 
@@ -38,3 +33,9 @@ def create_app():
     app.register_blueprint(main.bp)
 
     return app
+
+def create_database(app):
+    pass
+    # if not path.exists("website/" + DB_NAME):
+    # db.create_all(app=app)
+    # print("Created database!")
