@@ -7,7 +7,8 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import redirect
 
-from app.db import get_db
+from . import db
+from .models import user
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -17,44 +18,15 @@ def register():
         correo = request.form['correo']
         tim = request.form['tim']
         password = request.form['password']
-        db, c = get_db()
-        error = None
-        c.execute(
-            'select * from personal where tim = %s', (tim,)
-        )
-        personal = c.fetchone()
-
-        if not correo:
-            error = 'Correo corporativo es requerido'
-        if not tim:
-            error = 'TIM es requerida'
-        if not password:
-            error = 'Contraseña es requerida'
-        if personal is None:
-            error = 'La TIM "{}" no consta en la base de datos de la unidad.'.format(tim)
-        elif not(correo == personal['correo']):
-            error = 'El correo corporativo "{}" no consta en la base de datos de la unidad.'.format(correo)
+        password_2 = request.form['password_repeat']
         
-        if error is None:
-            c.execute(
-                'select id from user where id_personal = %s', (personal['id'],)
-            )
-            if c.fetchone() is not None:
-                error = 'Ya existe un usuario registrado con ese correo y esa TIM.'
         
-        if error is None:
-            c.execute(
-                'insert into user (password, id_personal) values (%s, %s)', (generate_password_hash(password), personal['id'])
-            )
-            db.commit()
 
-            c.execute(
-                'select * from user where id_personal = %s', (personal['id'],)
-            )
-            user = c.fetchone()
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('main.index'))
+
+        new_user = user(password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('auth.login'))
 
         flash(error)
 

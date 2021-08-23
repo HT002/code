@@ -3,11 +3,11 @@ instructions = [
     'DROP TABLE  IF EXISTS user',
     'DROP TABLE  IF EXISTS reserva_comida',
     'DROP TABLE  IF EXISTS reserva_deporte',
+    'DROP TABLE  IF EXISTS sugerencia',
     'SET FOREIGN_KEY_CHECKS=1',
     """
         CREATE TABLE user (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            correo varchar(50) NOT NULL UNIQUE,
             password VARCHAR(500) NOT NULL,
             id_personal INT NOT NULL UNIQUE,
             FOREIGN KEY (id_personal) REFERENCES personal(id)

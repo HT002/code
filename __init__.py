@@ -1,8 +1,16 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 import os
+
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootttxd7@localhost/academia'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)
+
 
     app.config.from_mapping(
         SENDGRID_KEY=os.environ.get('SENDGRID_KEY'),
@@ -13,9 +21,9 @@ def create_app():
         DATABASE=os.environ.get('FLASK_DATABASE'),
     )
 
-    from . import db
+    # from . import db
 
-    db.init_app(app)
+    # db.init_app(app)
 
     from . import auth
 
