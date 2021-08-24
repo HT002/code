@@ -14,6 +14,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     password = db.Column(db.String(500), nullable=False)
     id_personal = db.Column(db.Integer, db.ForeignKey('personal.id'), nullable=False, unique=True)
+    fecha = db.Column(db.DateTime(timezone=True), default=func.now())
 
 class Deporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,3 +49,4 @@ class Sugerencia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mensaje = db.Column(db.String(500), nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    fecha = db.Column(db.DateTime(timezone=True), default=func.now())

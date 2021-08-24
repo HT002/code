@@ -3,6 +3,9 @@ from app.db import get_db
 from flask import (
     Blueprint, render_template, request, redirect, url_for, current_app, g
 )
+from sqlalchemy import *
+from . import db
+from .models import Sugerencia
 
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -19,12 +22,10 @@ def mail():
         name = request.form.get('name')
         email = request.form.get('email')
         message = request.form.get('message')
-        db, c = get_db()
 
-        c.execute(
-            'insert into sugerencia (id_user, mensaje) values (%s, %s)', (g.user['id'], message)
-        )
-        db.commit()
+        new_message = Sugerencia(mensaje=message, id_user=g.user['id'])
+        db.session.add(new_message)
+        db.session.commit()
 
         send_mail(name, email, message)
 
@@ -44,7 +45,7 @@ def send_mail(name, email, message):
     })
 
     html_content = """
-        <p>Hola Buner, tienes un nuevo contacto desde la web:</p>
+        <p>Hola Rubén, tienes un nuevo contacto desde la web:</p>
         <p>Nombre: -name-</p>
         <p>Correo: -email-</p>
         <p>Mensaje: -message-</p>

@@ -24,7 +24,7 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(data.bp)
 
-    from .models import User
+    from .models import User, Personal, Deporte, Reserva_comida, Reserva_deporte, Zona, Dia_comida, Turno, Sugerencia
 
     create_database(app)
 

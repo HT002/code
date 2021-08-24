@@ -1,17 +1,16 @@
 
 from app.auth import login_required
-
 import functools
-
 from datetime import datetime
-
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
 )
 
 from werkzeug.utils import redirect
 
-from app.db import get_db
+from sqlalchemy import *
+from . import db
+from .models import Deporte, Zona, Reserva_deporte, Dia_comida, Turno, Reserva_comida, User
 
 from .schema_menu import orders
 
@@ -30,7 +29,6 @@ def create_menu():
 def comida():
     if request.method == 'POST':
         now = datetime.now()
-        db, c = get_db()
         error = None
 
         create_menu()
@@ -64,24 +62,25 @@ def deporte():
         user_id = g.user['id']
         fecha = request.form['fecha']
         deporte = request.form['deporte']
-        db, c = get_db()
-        error = None
 
-        c.execute(
-            """
-            select 
-                z.id as id_zona
-            from deporte d 
-            inner join zona z on z.id_deporte = d.id
-            where 
-                d.identificador_deporte = %s 
-                and z.id not in (
-                    select rd.id_zona
-                    from reserva_deporte rd
-                    where rd.fecha = %s
-                )
-            """, (deporte, fecha)
-        )
+        id_zona = db.session.query(Deporte, Zona).join(Zona).all()
+    
+        # c.execute(
+        #     """
+        #     select 
+        #         z.id as id_zona
+        #     from deporte d 
+        #     inner join zona z on z.id_deporte = d.id
+        #     where 
+        #         d.identificador_deporte = %s 
+        #         and z.id not in (
+        #             select rd.id_zona
+        #             from reserva_deporte rd
+        #             where rd.fecha = %s
+        #         )
+        #     """, (deporte, fecha)
+        # )
+
         zona_libre = c.fetchone()
         if zona_libre is None:
             error = 'Esa hora ya ha sido reservada.'
