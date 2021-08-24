@@ -24,4 +24,9 @@ Login
         </div>
     </div>
 </div>
+
+{% for ms in get_flashed_messages() %}
+    <div class="flash">{{ ms }}</div>
+{% endfor %}
+
 {% endblock %}

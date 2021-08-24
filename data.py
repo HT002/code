@@ -59,12 +59,15 @@ def comida():
 @login_required
 def deporte():
     if request.method == 'POST':
-        user_id = g.user['id']
+        user_id = g.user.id
         fecha = request.form['fecha']
         deporte = request.form['deporte']
 
-        id_zona = db.session.query(Deporte, Zona).join(Zona).all()
-    
+        new_user = Reserva_deporte(id=56, fecha=fecha, id_user=user_id, id_zona=56)
+        db.session.add(new_user)
+        db.session.commit()
+
+
         # c.execute(
         #     """
         #     select 
@@ -81,16 +84,5 @@ def deporte():
         #     """, (deporte, fecha)
         # )
 
-        zona_libre = c.fetchone()
-        if zona_libre is None:
-            error = 'Esa hora ya ha sido reservada.'
-        else:
-            c.execute(
-                'insert into reserva_deporte (fecha, id_user, id_zona) values (%s, %s, %s)', (fecha, user_id, zona_libre['id_zona'])
-            )
-            db.commit()
-            return redirect(url_for('main.index'))
-    
-        flash(error)
 
     return render_template('content/deporte.html')

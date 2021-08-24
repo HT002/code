@@ -20,7 +20,6 @@ def register():
         tim = request.form['tim']
         password = request.form['password']
         password_2 = request.form['password_repeat']
-        error = None
         
         correo_exists = Personal.query.filter_by(correo=correo).first()
         tim_exists = Personal.query.filter_by(tim=tim).first()
@@ -28,7 +27,7 @@ def register():
 
         if correo_exists:
             if tim_exists:
-                user_exists = User.query.filter_by(id=tim_exists.id).first()
+                user_exists = User.query.filter_by(id_personal=tim_exists.id).first()
                 if user_exists is None:
                     if password == password_2:
                         new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
@@ -54,7 +53,6 @@ def login():
     if request.method == 'POST':
         usuario = request.form['usuario']
         password = request.form['password']
-        error = None
 
         my_personal = Personal.query.filter(or_(
                 Personal.correo==usuario, Personal.tim==usuario)
