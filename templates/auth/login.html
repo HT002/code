@@ -4,6 +4,8 @@
 Login
 {% endblock %}
 
+
+
 {% block content %}
 <div class="hero grey">
     <div class="hero-content">
@@ -14,9 +16,7 @@ Login
                     <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" required /> <br>
                     <input type="submit" class="btn" value="Iniciar sesión">
                 </form>
-                {% for ms in get_flashed_messages() %}
-                <div class="flash">{{ ms }}</div>
-                {% endfor %}
+                
             </div>
         </div>
         <div class="right vert-pad">

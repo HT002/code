@@ -24,32 +24,28 @@ def register():
         
         correo_exists = Personal.query.filter_by(correo=correo).first()
         tim_exists = Personal.query.filter_by(tim=tim).first()
-        user_exists = User.query.filter_by(id=tim_exists.id).first()
 
-        if not correo:
-            error = 'Correo corporativo es requerido'
-        elif not tim:
-            error = 'TIM es requerida'
-        elif not password:
-            error = 'Contraseña es requerida'
-        elif correo_exists is None:
-            error = 'El correo corporativo "{}" no consta en la base de datos de la unidad.'.format(correo)
-        elif tim_exists is None:
-            error = 'La TIM "{}" no consta en la base de datos de la unidad.'.format(tim)
-        elif user_exists:
-            error = 'Ya existe un usuario registrado que está enlazado a ese correo y esa TIM.'
-        elif password != password_2:
-            error = 'Las contraseñas no coinciden.'
-        
-        if error is None:
-            new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
-            db.session.add(new_user)
-            db.session.commit()
-            session.clear()
-            session['user_id'] = new_user.id
-            return redirect(url_for('main.index'))
-        
-        flash(error)
+
+        if correo_exists:
+            if tim_exists:
+                user_exists = User.query.filter_by(id=tim_exists.id).first()
+                if user_exists is None:
+                    if password == password_2:
+                        new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
+                        db.session.add(new_user)
+                        db.session.commit()
+                        session.clear()
+                        session['user_id'] = new_user.id
+                        flash('Usuario creado con éxito.', category='success')
+                        return redirect(url_for('main.index'))
+                    else:
+                        flash('Las contraseñas no coinciden.', category='error')
+                else:
+                    flash('Ya existe un usuario enlazado a ese correo y esa TIM.', category='error')
+            else:
+                flash('La TIM o el correo no consta en la base de datos de la unidad.', category='error')
+        else:
+            flash('La TIM o el correo no consta en la base de datos de la unidad.', category='error')
 
     return render_template('auth/register.html')
 
@@ -63,23 +59,21 @@ def login():
         my_personal = Personal.query.filter(or_(
                 Personal.correo==usuario, Personal.tim==usuario)
         ).first()
-        my_user = User.query.filter_by(id_personal=my_personal.id).first()
         
-        if not usuario:
-            error = 'TIM o correo es requerido'
-        elif not password:
-            error = 'Contraseña es requerida'
-        elif my_user is None:
-            error = 'Credenciales de acceso incorrectas'
-        elif check_password_hash(my_user.password, password):
-            error = 'Credenciales de acceso incorrectas'
-        
-        if error is None:
-            session.clear()
-            session['user_id'] = my_user.id
-            return redirect(url_for('main.index'))
-
-        flash(error)
+        if my_personal:
+            my_user = User.query.filter_by(id_personal=my_personal.id).first()
+            if my_user:
+                if check_password_hash(my_user.password, password):
+                    flash('Inicio de sesión exitoso.', category='success')
+                    session.clear()
+                    session['user_id'] = my_user.id
+                    return redirect(url_for('main.index'))
+                else:
+                    flash('Credenciales de acceso incorrectas', category='error')
+            else:
+                flash('Credenciales de acceso incorrectas')
+        else:
+            flash('Credenciales de acceso incorrectas')
 
     return render_template('auth/login.html')
 
