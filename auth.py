@@ -5,7 +5,7 @@ from flask import (
 )
 from sqlalchemy import *
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import redirect
+from werkzeug.utils import escape, redirect
 
 from . import db
 from .models import Personal, User
@@ -21,13 +21,6 @@ def register():
         password_2 = request.form['password_repeat']
         error = None
         
-        """
-        personal_exists = Personal.query.filter(and_(
-            Personal.correo==correo, Personal.tim==tim)
-        ).first()
-        user_exists = User.query.filter_by(id_personal=personal_exists.id)
-        """
-
         correo_exists = Personal.query.filter_by(correo=correo).first()
         tim_exists = Personal.query.filter_by(tim=tim).first()
         user_exists = User.query.filter_by(id=tim_exists.id).first()
@@ -51,6 +44,8 @@ def register():
             new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
             db.session.add(new_user)
             db.session.commit()
+            session.clear()
+            session['user_id'] = new_user.id
             return redirect(url_for('auth.login'))
         
         flash(error)
@@ -93,24 +88,12 @@ def load_logged_in_user():
 
     if user_id is None:
         g.user = None
-        g.Personal = None
+        g.personal = None
     else:
-
         my_user = User.query.filter_by(id=user_id).first()
+        my_personal = Personal.query.filter_by(id=my_user.id_personal).first()
         g.user = my_user
-        g.Personal = my_user.id_Personal
-        """
-        db, c = get_db()
-        c.execute(
-            'select * from user where id = %s', (user_id,)
-        )
-        g.user = c.fetchone()
-
-        c.execute(
-            'select * from Personal where id = %s', (g.user['id_Personal'],)
-        )
-        g.Personal = c.fetchone()
-        """ 
+        g.personal = my_personal
 
 def login_required(view):
     @functools.wraps(view)

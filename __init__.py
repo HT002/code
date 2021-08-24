@@ -6,13 +6,14 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:rootttxd7@localhost/academia_2'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     db.init_app(app)
 
     app.config.from_mapping(
         SENDGRID_KEY=os.environ.get('SENDGRID_KEY'),
         SECRET_KEY=os.environ.get('SECRET_KEY'),
-        SQLALCHEMY_DATABASE_URI=os.environ.get('SQLALCHEMY_DATABASE_URI'),
-        SQLALCHEMY_TRACK_MODIFICATIONS=os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS'),
     )
 
     from . import main
@@ -23,7 +24,7 @@ def create_app():
     app.register_blueprint(auth.bp)
     app.register_blueprint(data.bp)
 
-    from .models import Personal, User, Deporte, Zona, Dia_comida, Turno, Reserva_deporte, Reserva_comida, Sugerencia
+    from .models import User
 
     create_database(app)
 
