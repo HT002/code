@@ -1,4 +1,5 @@
 import functools
+from operator import *
 
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
@@ -46,7 +47,7 @@ def register():
             db.session.commit()
             session.clear()
             session['user_id'] = new_user.id
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('main.index'))
         
         flash(error)
 
@@ -63,7 +64,7 @@ def login():
                 Personal.correo==usuario, Personal.tim==usuario)
         ).first()
         my_user = User.query.filter_by(id_personal=my_personal.id).first()
-
+        
         if not usuario:
             error = 'TIM o correo es requerido'
         elif not password:
