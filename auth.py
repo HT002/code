@@ -75,3 +75,11 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("main.index"))
+
+@bp.before_app_request
+def load_logged_in_user():
+    if current_user is None:
+        g.personal = None
+    else:
+        my_personal = Personal.query.filter(Personal.id==current_user.id_personal).first()
+        g.personal = my_personal
