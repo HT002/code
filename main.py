@@ -1,11 +1,12 @@
 from app.auth import login, login_required
-from app.db import get_db
+from flask_login import login_user, logout_user, login_required, current_user
 from flask import (
     Blueprint, render_template, request, redirect, url_for, current_app, g
 )
+from operator import or_, and_
 from sqlalchemy import *
 from . import db
-from .models import Sugerencia
+from .models import Sugerencia, User, Personal
 
 import sendgrid
 from sendgrid.helpers.mail import *
@@ -14,7 +15,7 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/', methods=['GET'])
 def index():
-    return render_template('main/index.html')
+    return render_template('main/index.html', user=current_user)
 
 @bp.route('/mail', methods=['GET', 'POST'])
 def mail():
@@ -22,8 +23,10 @@ def mail():
         name = request.form.get('name')
         email = request.form.get('email')
         message = request.form.get('message')
+        my_personal = Personal.query.filter(Personal.nombre==name).first()
+        my_user = User.query.filter(User.id_personal==my_personal.id).first()
 
-        new_message = Sugerencia(mensaje=message, id_user=g.user['id'])
+        new_message = Sugerencia(mensaje=message, id_user=my_user.id)
         db.session.add(new_message)
         db.session.commit()
 
@@ -31,7 +34,7 @@ def mail():
 
         return redirect(url_for('main.sugerencia_enviada'))
 
-    return render_template('content/suggest.html')
+    return render_template('content/suggest.html', user=current_user)
 
 def send_mail(name, email, message):
     mi_email = 'rubns_73@hotmail.com'
@@ -58,19 +61,19 @@ def send_mail(name, email, message):
 @bp.route('/Sugerencia enviada', methods=['GET'])
 @login_required
 def sugerencia_enviada():
-    return render_template('main/send_mail.html')
+    return render_template('main/send_mail.html', user=current_user)
 
 @bp.route('/orden', methods=['GET'])
 @login_required
 def orden():
-    return render_template('content/orden.html')
+    return render_template('content/orden.html', user=current_user)
 
 @bp.route('/seguridad', methods=['GET'])
 @login_required
 def seguridad():
-    return render_template('content/seguridad.html')
+    return render_template('content/seguridad.html', user=current_user)
 
 @bp.route('/menu', methods=['GET'])
 @login_required
 def menu():
-    return render_template('content/menu.html')
+    return render_template('content/menu.html', user=current_user)

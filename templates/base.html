@@ -16,8 +16,8 @@
         <div class="logo"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static',  filename='imagen/emblema.png') }}" width="45px"></a>ACADEMIA DE LOGÍSTICA</div>
         <nav>
             <ul>
-                {% if g.user %}
-                    <li><span class="hola">Hola, {{ g.personal['nombre'] }}</span></li>
+                {% if user.is_authenticated %}
+                    <li><span class="hola">Hola</span></li>
                     <li class="dropdown"><a href="#">Comidas</a>
                         <div class="dropdown-content">
                             <a href="{{ url_for('main.menu') }}">Menú semanal</a><br/>
@@ -43,14 +43,14 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %} {% if category == 'error' %}
-        <div class="alert alert-danger alter-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="alert">
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="/static/js/alerts/sweetAlert_error.js"></script>
         </div>
     {% else %}
-        <div class="alert alert-success alter-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="alert">
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="/static/js/alerts/sweetAlert_success.js"></script>
         </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
 
@@ -80,6 +80,5 @@
             </div>
         </div>
     </div>
-
     
 </body>

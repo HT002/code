@@ -1,13 +1,11 @@
 import functools
-from operator import *
-
+from operator import or_, and_
+from flask_login import login_user, logout_user, login_required, current_user
 from flask import (
-    Blueprint, flash, g, render_template, request, url_for, session, redirect
+    Blueprint, flash, g, render_template, request, url_for, redirect
 )
 from sqlalchemy import *
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import escape, redirect
-
 from . import db
 from .models import Personal, User
 
@@ -20,10 +18,9 @@ def register():
         tim = request.form['tim']
         password = request.form['password']
         password_2 = request.form['password_repeat']
-        
+    
         correo_exists = Personal.query.filter_by(correo=correo).first()
         tim_exists = Personal.query.filter_by(tim=tim).first()
-
 
         if correo_exists:
             if tim_exists:
@@ -33,8 +30,7 @@ def register():
                         new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
                         db.session.add(new_user)
                         db.session.commit()
-                        session.clear()
-                        session['user_id'] = new_user.id
+                        login_user(new_user, remember=True)
                         flash('Usuario creado con éxito.', category='success')
                         return redirect(url_for('main.index'))
                     else:
@@ -46,7 +42,7 @@ def register():
         else:
             flash('La TIM o el correo no consta en la base de datos de la unidad.', category='error')
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', user=current_user)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -63,42 +59,19 @@ def login():
             if my_user:
                 if check_password_hash(my_user.password, password):
                     flash('Inicio de sesión exitoso.', category='success')
-                    session.clear()
-                    session['user_id'] = my_user.id
+                    login_user(my_user, remember=True)
                     return redirect(url_for('main.index'))
                 else:
                     flash('Credenciales de acceso incorrectas', category='error')
             else:
-                flash('Credenciales de acceso incorrectas')
+                flash('Credenciales de acceso incorrectas', category='error')
         else:
-            flash('Credenciales de acceso incorrectas')
+            flash('Credenciales de acceso incorrectas', category='error')
 
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', user=current_user)
 
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-        g.personal = None
-    else:
-        my_user = User.query.filter_by(id=user_id).first()
-        my_personal = Personal.query.filter_by(id=my_user.id_personal).first()
-        g.user = my_user
-        g.personal = my_personal
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-        
-        return view(**kwargs)
-    
-    return wrapped_view
-
-@bp.route('/logout')
+@bp.route("/logout")
+@login_required
 def logout():
-    session.clear()
-    return redirect(url_for('main.index'))
+    logout_user()
+    return redirect(url_for("main.index"))

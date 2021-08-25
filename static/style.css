@@ -314,3 +314,7 @@ a.btn {
     cursor: pointer;
 }
 
+.alert {
+    position: absolute;
+    z-index: 10;
+}

@@ -1,37 +1,25 @@
 
 from app.auth import login_required
+from flask_login import login_user, logout_user, login_required, current_user
 import functools
 from datetime import datetime
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
 )
 
-from werkzeug.utils import redirect
-
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
 from . import db
 from .models import Deporte, Zona, Reserva_deporte, Dia_comida, Turno, Reserva_comida, User
 
-from .schema_menu import orders
-
 bp = Blueprint('data', __name__, url_prefix='/data')
-
-def create_menu():
-    db, c = get_db()
-
-    for i in orders:
-        c.execute(i)
-
-    db.commit()
 
 @bp.route('/comida', methods=['GET', 'POST'])
 @login_required
 def comida():
     if request.method == 'POST':
         now = datetime.now()
-        error = None
 
-        create_menu()
         c.execute(
             'select id from dia_comida where fecha = %s', (now.date(),)
         )
@@ -52,21 +40,23 @@ def comida():
 
         return redirect(url_for('main.menu'))
     
-    return render_template('content/apuntarse.html')
+    return render_template('content/apuntarse.html', user=current_user)
 
 
 @bp.route('/deporte', methods=['GET', 'POST'])
 @login_required
 def deporte():
     if request.method == 'POST':
-        user_id = g.user.id
         fecha = request.form['fecha']
         deporte = request.form['deporte']
+        id_deporte = Deporte.query.filter(Deporte.identificador_deporte==deporte).first()
+        zonas = Zona.query.filter(Zona.id==id_deporte).all()
+        raise Exception(zonas)
 
-        new_user = Reserva_deporte(id=56, fecha=fecha, id_user=user_id, id_zona=56)
-        db.session.add(new_user)
-        db.session.commit()
-
+        if fecha:
+            nueva = Reserva_deporte(fecha=fecha, id_user='1', id_zona='4')
+            db.session.add(nueva)
+            db.session.commit()
 
         # c.execute(
         #     """
@@ -85,4 +75,4 @@ def deporte():
         # )
 
 
-    return render_template('content/deporte.html')
+    return render_template('content/deporte.html', user=current_user)
