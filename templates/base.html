@@ -17,7 +17,7 @@
         <nav>
             <ul>
                 {% if user.is_authenticated %}
-                    <li><span class="hola">Hola, {{ g.personal.nombre }}</span></li>
+                    <li><span class="hola">Usuario: </span></li>
                     <li class="dropdown"><a href="#">Comidas</a>
                         <div class="dropdown-content">
                             <a href="{{ url_for('main.menu') }}">Menú semanal</a><br/>
@@ -41,18 +41,29 @@
         </nav>
     </header>
 
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %} {% if category == 'error' %}
-        <div class="alert">
-            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="/static/js/alerts/sweetAlert_error.js"></script>
-        </div>
-    {% else %}
-        <div class="alert">
-            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="/static/js/alerts/sweetAlert_success.js"></script>
-        </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages %} 
+            {% for category, message in messages %} 
+                {% if category == 'error' %}
+                    <div class="alert">
+                        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <script src="/static/js/alerts/sweetAlert_error.js"></script>
+                        <script> 
+                            inicializar_mensaje_error("{{ message }}");
+                        </script>
+                    </div>
+                {% else %}
+                    <div class="alert">
+                        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <script src="/static/js/alerts/sweetAlert_success.js"></script>
+                        <script> 
+                            inicializar_mensaje_success("{{ message }}");
+                        </script>
+                    </div>
+                {% endif %} 
+            {% endfor %} 
+        {% endif %} 
+    {% endwith %}
 
     <section>{% block content %}{% endblock %}</section>
 

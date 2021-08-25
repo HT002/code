@@ -48,15 +48,23 @@ def comida():
 def deporte():
     if request.method == 'POST':
         fecha = request.form['fecha']
-        deporte = request.form['deporte']
-        id_deporte = Deporte.query.filter(Deporte.identificador_deporte==deporte).first()
-        zonas = Zona.query.filter(Zona.id==id_deporte).all()
-        raise Exception(zonas)
+        deporte_id = request.form['deporte']
+        deporte = Deporte.query.filter(Deporte.identificador_deporte==deporte_id).first()
+        reservas_en_fecha = Reserva_deporte.query.filter(Reserva_deporte.fecha==fecha).all()
+        ids_zona_reservada = []
+        for ref in reservas_en_fecha:
+            ids_zona_reservada.append(ref.id_zona)
+        
+        zona_libre = Zona.query.filter(Zona.id_deporte==deporte.id).filter(Zona.id not in ids_zona_reservada).first()
 
         if fecha:
-            nueva = Reserva_deporte(fecha=fecha, id_user='1', id_zona='4')
-            db.session.add(nueva)
-            db.session.commit()
+            reserva_deporte = Reserva_deporte(fecha=fecha, id_user=current_user.id, id_zona=zona_libre.id)
+            # reserva_deporte.save()
+            try:
+                db.session.add(reserva_deporte)
+                db.session.commit()
+            except:
+                raise Exception("Ha ocurrido un error al guardar la reserva de deporte")
 
         # c.execute(
         #     """

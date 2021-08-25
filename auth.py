@@ -78,8 +78,8 @@ def logout():
 
 @bp.before_app_request
 def load_logged_in_user():
-    if current_user is None:
-        g.personal = None
-    else:
+    if current_user.is_authenticated:
         my_personal = Personal.query.filter(Personal.id==current_user.id_personal).first()
         g.personal = my_personal
+    else:
+        g.personal = None

@@ -1,12 +1,16 @@
-Swal.fire({
-    title: 'Algo ha salido mal',
-    text: 'Credenciales incorrectas.',
-    icon: 'error',
-    backdrop: true,
-    position: 'center',
-    background: '#eee',
-    allowOutsideClick: true,
-    allowEscapeKey: true,
-    allowEnterKey: true,
-    stopKeydownPropagation: false,
-});
+
+function inicializar_mensaje_error(mensaje){
+    Swal.fire({
+        title: 'Algo ha salido mal',
+        html: mensaje,
+        icon: 'error',
+        backdrop: true,
+        position: 'center',
+        background: '#eee',
+        allowOutsideClick: true,
+        allowEscapeKey: true,
+        allowEnterKey: true,
+        stopKeydownPropagation: false,
+    });
+}
+
