@@ -47,40 +47,28 @@ def comida():
 @login_required
 def deporte():
     if request.method == 'POST':
-        fecha = request.form['fecha']
-        deporte_id = request.form['deporte']
-        deporte = Deporte.query.filter(Deporte.identificador_deporte==deporte_id).first()
-        reservas_en_fecha = Reserva_deporte.query.filter(Reserva_deporte.fecha==fecha).all()
-        ids_zona_reservada = []
-        for ref in reservas_en_fecha:
-            ids_zona_reservada.append(ref.id_zona)
+        try:
+            fecha = request.form['fecha']
+            deporte_id = request.form['deporte']
+            deporte = Deporte.query.filter(Deporte.identificador_deporte==deporte_id).first()
+            reservas_en_fecha = Reserva_deporte.query.filter(Reserva_deporte.fecha==fecha).all()
+            ids_zona_reservada = []
+            for ref in reservas_en_fecha:
+                ids_zona_reservada.append(ref.id_zona)
+        except:
+            raise Exception("Ha ocurrido un error al recibir los datos de deporte.")
         
         zona_libre = Zona.query.filter(Zona.id_deporte==deporte.id).filter(Zona.id not in ids_zona_reservada).first()
 
-        if fecha:
+        if zona_libre:
             reserva_deporte = Reserva_deporte(fecha=fecha, id_user=current_user.id, id_zona=zona_libre.id)
-            # reserva_deporte.save()
             try:
                 db.session.add(reserva_deporte)
                 db.session.commit()
+                flash('Reserva realizada.', category='success')
             except:
-                raise Exception("Ha ocurrido un error al guardar la reserva de deporte")
-
-        # c.execute(
-        #     """
-        #     select 
-        #         z.id as id_zona
-        #     from deporte d 
-        #     inner join zona z on z.id_deporte = d.id
-        #     where 
-        #         d.identificador_deporte = %s 
-        #         and z.id not in (
-        #             select rd.id_zona
-        #             from reserva_deporte rd
-        #             where rd.fecha = %s
-        #         )
-        #     """, (deporte, fecha)
-        # )
-
-
+                raise Exception("Ha ocurrido un error al guardar la reserva de deporte.")
+        else:
+            flash('No hay plazas libres para esa fecha.', category='error')
+        
     return render_template('content/deporte.html', user=current_user)

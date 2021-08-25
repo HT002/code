@@ -52,12 +52,20 @@
                             inicializar_mensaje_error("{{ message }}");
                         </script>
                     </div>
-                {% else %}
+                {% elif category == 'success' %}
                     <div class="alert">
                         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                         <script src="/static/js/alerts/sweetAlert_success.js"></script>
                         <script> 
                             inicializar_mensaje_success("{{ message }}");
+                        </script>
+                    </div>
+                {% else %}
+                    <div class="alert">
+                        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <script src="/static/js/alerts/sweetAlert_login.js"></script>
+                        <script> 
+                            inicializar_mensaje_login("{{ message }}");
                         </script>
                     </div>
                 {% endif %} 

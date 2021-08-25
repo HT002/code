@@ -14,25 +14,31 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        correo = request.form['correo']
-        tim = request.form['tim']
-        password = request.form['password']
-        password_2 = request.form['password_repeat']
-    
-        correo_exists = Personal.query.filter_by(correo=correo).first()
-        tim_exists = Personal.query.filter_by(tim=tim).first()
+        try:
+            correo = request.form['correo']
+            tim = request.form['tim']
+            password = request.form['password']
+            password_2 = request.form['password_repeat']
+        
+            correo_exists = Personal.query.filter_by(correo=correo).first()
+            tim_exists = Personal.query.filter_by(tim=tim).first()
+        except:
+            raise Exception("Ha ocurrido un error al recibir los datos del registro.")
 
         if correo_exists:
             if tim_exists:
                 user_exists = User.query.filter_by(id_personal=tim_exists.id).first()
                 if user_exists is None:
                     if password == password_2:
-                        new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
-                        db.session.add(new_user)
-                        db.session.commit()
-                        login_user(new_user, remember=True)
-                        flash('Usuario registrado.', category='success')
-                        return redirect(url_for('main.index'))
+                        try:
+                            new_user = User(password=generate_password_hash(password), id_personal=tim_exists.id)
+                            db.session.add(new_user)
+                            db.session.commit()
+                            login_user(new_user, remember=True)
+                            flash('Usuario registrado.', category='login')
+                            return redirect(url_for('main.index'))
+                        except:
+                            raise Exception("Ha ocurrido un error al guardar los datos del registro de usario.")
                     else:
                         flash('Las contraseñas no coinciden.', category='error')
                 else:
@@ -47,20 +53,26 @@ def register():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        usuario = request.form['usuario']
-        password = request.form['password']
+        try:
+            usuario = request.form['usuario']
+            password = request.form['password']
 
-        my_personal = Personal.query.filter(or_(
-                Personal.correo==usuario, Personal.tim==usuario)
-        ).first()
+            my_personal = Personal.query.filter(or_(
+                    Personal.correo==usuario, Personal.tim==usuario)
+            ).first()
+        except:
+            raise Exception("Ha ocurrido un error al recibir los datos del login.")
         
         if my_personal:
             my_user = User.query.filter_by(id_personal=my_personal.id).first()
             if my_user:
                 if check_password_hash(my_user.password, password):
-                    flash('Sesión iniciada.', category='success')
-                    login_user(my_user, remember=True)
-                    return redirect(url_for('main.index'))
+                    try:
+                        flash('Sesión iniciada.', category='login')
+                        login_user(my_user, remember=True)
+                        return redirect(url_for('main.index'))
+                    except:
+                        raise Exception("Ha ocurrido un error al iniciar sesión.")
                 else:
                     flash('Credenciales de acceso incorrectas', category='error')
             else:
@@ -79,7 +91,10 @@ def logout():
 @bp.before_app_request
 def load_logged_in_user():
     if current_user.is_authenticated:
-        my_personal = Personal.query.filter(Personal.id==current_user.id_personal).first()
-        g.personal = my_personal
+        try:
+            my_personal = Personal.query.filter(Personal.id==current_user.id_personal).first()
+            g.personal = my_personal
+        except:
+            raise Exception("Ha ocurrido un error al recibir los datos del usuario actual.")
     else:
         g.personal = None

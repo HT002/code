@@ -1,7 +1,7 @@
 from app.auth import login, login_required
 from flask_login import login_user, logout_user, login_required, current_user
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, current_app, g
+    Blueprint, render_template, request, redirect, url_for, current_app, g, flash
 )
 from operator import or_, and_
 from sqlalchemy import *
@@ -21,17 +21,23 @@ def index():
 @bp.route('/mail', methods=['GET', 'POST'])
 def mail():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
-        my_personal = Personal.query.filter(Personal.nombre==name).first()
-        my_user = User.query.filter(User.id_personal==my_personal.id).first()
+        try:
+            name = request.form.get('name')
+            email = request.form.get('email')
+            message = request.form.get('message')
+            my_personal = Personal.query.filter(Personal.nombre==name).first()
+            my_user = User.query.filter(User.id_personal==my_personal.id).first()
+        except:
+            raise Exception("Ha ocurrido un error al recibir los datos de sugerencia.")
 
-        new_message = Sugerencia(mensaje=message, id_user=my_user.id)
-        db.session.add(new_message)
-        db.session.commit()
-
-        send_mail(name, email, message)
+        try:
+            new_message = Sugerencia(mensaje=message, id_user=my_user.id)
+            db.session.add(new_message)
+            db.session.commit()
+            
+            send_mail(name, email, message)
+        except:
+            raise Exception("Ha ocurrido un error al guardar la sugerencia.")
 
         return redirect(url_for('main.sugerencia_enviada'))
 
