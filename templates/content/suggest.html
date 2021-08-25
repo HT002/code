@@ -14,8 +14,8 @@ Sugerencias
             </div>
             <div id="contacto" class="right padded">
                 <form class="contact-form" method="POST" action="{{ url_for('main.mail') }}" autocomplete="off">
-                    <input class="full-width" name="name" id="name" type="text" />
-                    <input class="full-width" name="email" id="email" type="email" />
+                    <input class="full-width" name="name" id="name" type="text" value="{{ g.personal['nombre'] }}" readonly />
+                    <input class="full-width" name="email" id="email" type="email" value="{{ g.personal['correo'] }}" readonly />
                     <textarea placeholder="Mensaje" name="message" id='message' required minlength="10"></textarea>
                     <input type="submit" class="btn full-width" value="Enviar" />
                 </form>

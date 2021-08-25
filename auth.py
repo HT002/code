@@ -31,16 +31,16 @@ def register():
                         db.session.add(new_user)
                         db.session.commit()
                         login_user(new_user, remember=True)
-                        flash('Usuario creado con éxito.', category='success')
+                        flash('Usuario registrado.', category='success')
                         return redirect(url_for('main.index'))
                     else:
                         flash('Las contraseñas no coinciden.', category='error')
                 else:
                     flash('Ya existe un usuario enlazado a ese correo y esa TIM.', category='error')
             else:
-                flash('La TIM o el correo no consta en la base de datos de la unidad.', category='error')
+                flash('La TIM o el correo corporativo no consta en la base de datos de la unidad.', category='error')
         else:
-            flash('La TIM o el correo no consta en la base de datos de la unidad.', category='error')
+            flash('La TIM o el correo corporativo no consta en la base de datos de la unidad.', category='error')
 
     return render_template('auth/register.html', user=current_user)
 
@@ -58,7 +58,7 @@ def login():
             my_user = User.query.filter_by(id_personal=my_personal.id).first()
             if my_user:
                 if check_password_hash(my_user.password, password):
-                    flash('Inicio de sesión exitoso.', category='success')
+                    flash('Sesión iniciada.', category='success')
                     login_user(my_user, remember=True)
                     return redirect(url_for('main.index'))
                 else:

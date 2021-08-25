@@ -17,7 +17,7 @@ a {
 }
 
 a:hover {
-    color: rgb(226, 209, 55);
+    color: rgb(185, 173, 62);
 }
 
 html body header {
@@ -262,7 +262,8 @@ a.btn {
 }
 
 .hola {
-    color: rgb(204, 191, 74);
+    color: rgb(162, 152, 54);
+    font-weight: 900;
 }
 
 .day {
@@ -281,7 +282,7 @@ a.btn {
 
 .menu-form div h3 {
     font-family: 'Rubik', sans-serif;
-    color: rgb(204, 191, 74);
+    color: rgb(185, 173, 62);
     font-size: 20px;
 }
 
@@ -296,7 +297,7 @@ a.btn {
 }
 
 .menu-form div input:checked + label{
-    color: rgb(204, 191, 74);
+    color: rgb(185, 173, 62);
 }
 
 .special {

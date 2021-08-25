@@ -16,7 +16,6 @@ Login
                     <input class="dato" id="password" name="password" placeholder="Contraseña" type="password" required /> <br>
                     <input type="submit" class="btn" value="Iniciar sesión">
                 </form>
-                
             </div>
         </div>
         <div class="right vert-pad">
@@ -24,9 +23,4 @@ Login
         </div>
     </div>
 </div>
-
-{% for ms in get_flashed_messages() %}
-    <div class="flash">{{ ms }}</div>
-{% endfor %}
-
 {% endblock %}

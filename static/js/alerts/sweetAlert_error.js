@@ -1,4 +1,3 @@
-
 function inicializar_mensaje_error(mensaje){
     Swal.fire({
         title: 'Algo ha salido mal',
@@ -6,11 +5,9 @@ function inicializar_mensaje_error(mensaje){
         icon: 'error',
         backdrop: true,
         position: 'center',
-        background: '#eee',
         allowOutsideClick: true,
         allowEscapeKey: true,
         allowEnterKey: true,
         stopKeydownPropagation: false,
     });
 }
-

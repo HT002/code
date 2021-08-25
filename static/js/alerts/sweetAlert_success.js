@@ -1,14 +1,16 @@
 function inicializar_mensaje_success(mensaje){
-    Swal.fire({
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+      })
+      
+      Toast.fire({
+        icon: 'success',
         title: 'Éxito',
         html: mensaje,
-        icon: 'success',
-        backdrop: true,
-        position: 'center',
-        background: '#eee',
-        allowOutsideClick: true,
-        allowEscapeKey: true,
-        allowEnterKey: true,
-        stopKeydownPropagation: false,
-    });
+        background: '#eee'
+      })
 }

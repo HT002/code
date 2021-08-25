@@ -7,7 +7,7 @@ Registro
 {% block content %}
 <div class="hero grey">
     <div class="hero-content">
-        <div class="left">
+        <div class="left vs-menu">
             <div id="contacto" class="left padded">
                 <form class="form" method="POST" autocomplete="off">
                     <input type="email" class="dato" placeholder="Correo corporativo" name="correo" id="correo" required />
@@ -16,12 +16,9 @@ Registro
                     <input class="dato" id="password_repeat" name="password_repeat" placeholder="Confirma la contraseña" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="El tamaño mínimo es 8, debes incluir al menos un número, una minúscula y una mayuscula." required /> <br>
                     <input type="submit" class="btn" value="Registrarse">
                 </form>
-                {% for ms in get_flashed_messages() %}
-                <div class="flash">{{ ms }}</div>
-                {% endfor %}
             </div>
         </div>
-        <div class="right vert-pad">
+        <div class="right vert-pad vs-menu">
             <img src="{{ url_for('static',  filename='imagen/register.png') }}" width="450px" />
         </div>
     </div>
