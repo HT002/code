@@ -34,12 +34,10 @@ def mail():
             new_message = Sugerencia(mensaje=message, id_user=my_user.id)
             db.session.add(new_message)
             db.session.commit()
-            
+            flash('Gracias, tu sugerencia ha sido enviada.', category='success')
             send_mail(name, email, message)
         except:
             raise Exception("Ha ocurrido un error al guardar la sugerencia.")
-
-        return redirect(url_for('main.sugerencia_enviada'))
 
     return render_template('content/suggest.html', user=current_user)
 
@@ -65,10 +63,10 @@ def send_mail(name, email, message):
     response = sg.client.mail.send.post(request_body=mail.get())
 
 
-@bp.route('/Sugerencia enviada', methods=['GET'])
+@bp.route('/Reserva cerrada', methods=['GET'])
 @login_required
-def sugerencia_enviada():
-    return render_template('main/send_mail.html', user=current_user)
+def reserva_cerrada():
+    return render_template('content/reserva_cerrada.html', user=current_user)
 
 @bp.route('/orden', methods=['GET'])
 @login_required

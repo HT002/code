@@ -2,7 +2,7 @@
 from app.auth import login_required
 from flask_login import login_user, logout_user, login_required, current_user
 import functools
-from datetime import datetime
+from datetime import datetime, date
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
 )
@@ -20,12 +20,25 @@ def comida():
     dias = [('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')]
     turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
 
+    # Falta sacar las fechas de cada dia de la semana que viene en 'fechas'
+
+    #if date.today().weekday() == 0:
+    #    try:    
+    #        for dia in dias:
+    #            registro_dias = Dia_comida(fecha=fechas)
+    #            db.session.add(registro_dias)
+    #            db.session.commit()
+    #    except:
+    #        raise Exception('Ha ocurrido un error al crear los días de comida.')
+
     if request.method == 'POST':
         dias = dias
         turnos = turnos
-        now = datetime.now()
-        fecha = request.form[''] #esto esta mal. Necesito la fecha del dia elegido para la siguiente semana pero no se hacerlo
-        dia_elegido = Dia_comida.query.filter(Dia_comida.fecha==fecha).first()
+        
+        fechas = []
+        for kdia, dia in dias:
+            fechas.append(kdia)
+        
 
         # c.execute(
         #     'select id from dia_comida where fecha = %s', (now.date(),)
@@ -47,7 +60,10 @@ def comida():
 
         return redirect(url_for('main.menu'))
     
-    return render_template('content/apuntarse.html', user=current_user, dias = dias, turnos = turnos)
+    if date.today().weekday() <= 2:
+        return render_template('content/apuntarse.html', user=current_user, dias = dias, turnos = turnos)
+    else:
+        return render_template('content/reserva_cerrada.html', user=current_user)
 
 
 @bp.route('/deporte', methods=['GET', 'POST'])

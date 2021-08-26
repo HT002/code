@@ -7,7 +7,7 @@ from flask_login import UserMixin
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     password = db.Column(db.String(500), nullable=False)
-    id_personal = db.Column(db.Integer, db.ForeignKey('personal.id'), nullable=False, unique=True)
+    id_personal = db.Column(db.Integer, db.ForeignKey('personal.id', ondelete='CASCADE'), nullable=False, unique=True)
     fecha = db.Column(db.DateTime(), default=func.now())
 
 class Personal(db.Model):
@@ -38,7 +38,7 @@ class Turno(db.Model):
 class Reserva_deporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.DateTime(timezone=True), nullable=False, unique=False)
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     id_zona = db.Column(db.Integer, db.ForeignKey('zona.id'), nullable=False)
 
 class Reserva_comida(db.Model):
