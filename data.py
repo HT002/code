@@ -2,7 +2,7 @@
 from app.auth import login_required
 from flask_login import login_user, logout_user, login_required, current_user
 import functools
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
 )
@@ -22,22 +22,27 @@ def comida():
 
     # Falta sacar las fechas de cada dia de la semana que viene en 'fechas'
 
-    #if date.today().weekday() == 0:
-    #    try:    
-    #        for dia in dias:
-    #            registro_dias = Dia_comida(fecha=fechas)
-    #            db.session.add(registro_dias)
-    #            db.session.commit()
-    #    except:
-    #        raise Exception('Ha ocurrido un error al crear los días de comida.')
+    today = date.today()
+    end_date = today + timedelta(days=7)
+    raise Exception(end_date) #esto devuelve el mismo dia de la semana que siguiente
+
+    if date.today().weekday() == 0:
+        try:    
+            for dia in dias:
+                registro_dias = Dia_comida(fecha=fechas)
+                db.session.add(registro_dias)
+                db.session.commit()
+        except:
+            raise Exception('Ha ocurrido un error al crear los días de comida.')
 
     if request.method == 'POST':
         dias = dias
         turnos = turnos
         
-        fechas = []
+        reserva = []
         for kdia, dia in dias:
-            fechas.append(kdia)
+
+            reserva.append(kdia)
         
 
         # c.execute(
