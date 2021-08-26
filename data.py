@@ -17,8 +17,12 @@ bp = Blueprint('data', __name__, url_prefix='/data')
 @bp.route('/comida', methods=['GET', 'POST'])
 @login_required
 def comida():
+    dias = [('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')]
+    turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
 
     if request.method == 'POST':
+        dias = dias
+        turnos = turnos
         now = datetime.now()
         fecha = request.form[''] #esto esta mal. Necesito la fecha del dia elegido para la siguiente semana pero no se hacerlo
         dia_elegido = Dia_comida.query.filter(Dia_comida.fecha==fecha).first()
@@ -43,7 +47,7 @@ def comida():
 
         return redirect(url_for('main.menu'))
     
-    return render_template('content/apuntarse.html', user=current_user)
+    return render_template('content/apuntarse.html', user=current_user, dias = dias, turnos = turnos)
 
 
 @bp.route('/deporte', methods=['GET', 'POST'])
