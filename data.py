@@ -23,21 +23,33 @@ def comida():
     # Falta sacar las fechas de cada dia de la semana que viene en 'fechas'
 
     today = date.today()
-    end_date = today + timedelta(days=7)
-    raise Exception(end_date) #esto devuelve el mismo dia de la semana que siguiente
-
-    if date.today().weekday() == 0:
-        try:    
-            for dia in dias:
-                registro_dias = Dia_comida(fecha=fechas)
-                db.session.add(registro_dias)
-                db.session.commit()
-        except:
-            raise Exception('Ha ocurrido un error al crear los días de comida.')
+    start_date = today + timedelta(days= (7 - today.weekday()))
+    end_date = start_date + timedelta(days=7)
+    delta = timedelta(days=1)
 
     if request.method == 'POST':
-        dias = dias
-        turnos = turnos
+
+        es_nuevo = query(start_date)
+          
+        relacion_dias_fechas = {}
+        index=0
+        while start_date <= end_date:
+            if es_nuevo:        
+                registro_dias = Dia_comida(fecha=start_date)
+                db.session.add(registro_dias)
+                
+
+            relacion_dias_fechas[dias[index][0]] = start_date
+            start_date += delta
+            index += 1
+
+        if es_nuevo:
+            db.session.commit()
+    
+        raise Exception('Ha ocurrido un error al crear los días de comida.')
+
+
+        
         
         reserva = []
         for kdia, dia in dias:
@@ -67,6 +79,9 @@ def comida():
     
     if date.today().weekday() <= 2:
         return render_template('content/apuntarse.html', user=current_user, dias = dias, turnos = turnos)
+
+        context = {'user':current_user, 'dias' : dias, 'turnos' : turnos}
+        return render_template('content/apuntarse.html', context=context) 
     else:
         return render_template('content/reserva_cerrada.html', user=current_user)
 
