@@ -321,3 +321,77 @@ a.btn {
     margin-top: 50px !important;
     top: 20px;
 }   
+
+.servicios_ord {
+    position: relative;
+    margin: auto;
+    background-color: white;
+    width: 695px;
+    height: 575px;
+    padding: 10px;
+}
+
+.servicios_ord ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.servicios_seg {
+    position: relative;
+    margin: auto;
+    background-color: white;
+    width: 825px;
+    height: 480px;
+    padding: 10px;
+}
+
+.servicios_seg ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.slider {
+    position: absolute;
+    width: 650px;
+    height: auto;
+}
+
+ul.slider li {
+    position: absolute;
+    opacity: 0;
+    width: inherit;
+    height: inherit;
+    transition: opacity .5s;
+}
+
+ul.slider li:first-child {
+    opacity: 1;
+}
+
+.menu {
+    margin: 25px;
+}
+
+.menu ul li {
+    display: inline-block;
+    text-align: center;
+}
+
+.menu ul li a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    background-color: grey;
+    padding: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    border-radius: 100px;
+    margin: 2px;
+}
+
+ul.slider li:target {
+    opacity:1;
+}

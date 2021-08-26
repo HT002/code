@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-S. de Orden
+S. de seguridad
 {% endblock %}
 
 {% block content %}
@@ -11,9 +11,56 @@ S. de Orden
             <div class="left padded">
                 <h1>Servicios de seguridad</h1>
                 <p>Les recordamos que estos servicios pueden ser modificados si el servicio lo requiere.</p>
+                <div class="menu">
+                    <ul>
+                        <li>
+                            <a href="#slide1">L</a>
+                        </li>
+                        <li>
+                            <a href="#slide2">M</a>
+                        </li>
+                        <li>
+                            <a href="#slide3">X</a>
+                        </li>
+                        <li>
+                            <a href="#slide4">J</a>
+                        </li>
+                        <li>
+                            <a href="#slide5">V</a>
+                        </li>
+                        <li>
+                            <a href="#slide6">S</a>
+                        </li>
+                        <li>
+                            <a href="#slide7">D</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="contacto" class="right padded">
-                <img src="{{ url_for('static',  filename='imagen/seguridad.png') }}" width="700px" />
+            <div id="contacto" class="right padded servicios_seg">
+                <ul class="slider">
+                    <li id="slide1">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_lunes.png') }}" width="650px" />
+                    </li>
+                    <li id="slide2">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_martes.png') }}" width="650px" />
+                    </li>
+                    <li id="slide3">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_miercoles.png') }}" width="650px" />
+                    </li>
+                    <li id="slide4">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_jueves.png') }}" width="650px" />
+                    </li>
+                    <li id="slide5">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_viernes.png') }}" width="650px" />
+                    </li>
+                    <li id="slide6">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_sabado.png') }}" width="650px" />
+                    </li>
+                    <li id="slide7">
+                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_domingo.png') }}" width="650px" />
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

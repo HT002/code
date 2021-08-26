@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
 
-<link rel="icon" type="image/gif/png" href="{{ url_for('static',  filename='imagen/emblema.png') }}">
+<link rel="icon" type="image/gif/png" href="{{ url_for('static',  filename='imagen/decoration/emblema.png') }}">
 
 <body>
     <header>
-        <div class="logo"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static',  filename='imagen/emblema.png') }}" width="45px"></a>ACADEMIA DE LOGÍSTICA</div>
+        <div class="logo"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static',  filename='imagen/decoration/emblema.png') }}" width="45px"></a>ACADEMIA DE LOGÍSTICA</div>
         <nav>
             <ul>
                 {% if user.is_authenticated %}
@@ -88,14 +88,14 @@
         </div>
         <div class="center full-width social-links">
             <div class="row">
-                <a target="_blank" href="https://twitter.com/Defensagob"><img class="social" width="30" src="{{ url_for('static', filename='imagen/twitter.png') }}" /></a>
-                <a target="_blank" href="https://www.facebook.com/MinisterioDefensaESP/"><img class="social" width="30" src="{{ url_for('static', filename='imagen/facebook.png') }}" /></a>
-                <a target="_blank" href="https://es.linkedin.com/company/ejercito-de-tierra"><img class="social" width="30" src="{{ url_for('static', filename='imagen/linkedin.png') }}" /></a>
+                <a target="_blank" href="https://twitter.com/Defensagob"><img class="social" width="30" src="{{ url_for('static', filename='imagen/social_media/twitter.png') }}" /></a>
+                <a target="_blank" href="https://www.facebook.com/MinisterioDefensaESP/"><img class="social" width="30" src="{{ url_for('static', filename='imagen/social_media/facebook.png') }}" /></a>
+                <a target="_blank" href="https://es.linkedin.com/company/ejercito-de-tierra"><img class="social" width="30" src="{{ url_for('static', filename='imagen/social_media/linkedin.png') }}" /></a>
             </div>
         </div>
         <div class="made-with">
             <div class="row">
-                <img width="150" src="{{ url_for('static', filename='imagen/buner.png') }}" />
+                <img width="150" src="{{ url_for('static', filename='imagen/decoration/buner.png') }}" />
             </div>
         </div>
     </div>

@@ -11,9 +11,56 @@ S. de Orden
             <div class="left padded">
                 <h1>Servicios de orden</h1>
                 <p>Les recordamos que estos servicios pueden ser modificados si el servicio lo requiere.</p>
+                <div class="menu">
+                    <ul>
+                        <li>
+                            <a href="#slide1">L</a>
+                        </li>
+                        <li>
+                            <a href="#slide2">M</a>
+                        </li>
+                        <li>
+                            <a href="#slide3">X</a>
+                        </li>
+                        <li>
+                            <a href="#slide4">J</a>
+                        </li>
+                        <li>
+                            <a href="#slide5">V</a>
+                        </li>
+                        <li>
+                            <a href="#slide6">S</a>
+                        </li>
+                        <li>
+                            <a href="#slide7">D</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="contacto" class="right padded">
-                <img src="{{ url_for('static',  filename='imagen/orden.png') }}" width="650px" />
+            <div id="contacto" class="right padded servicios_ord">
+                <ul class="slider">
+                    <li id="slide1">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_lunes.png') }}" width="600px" />
+                    </li>
+                    <li id="slide2">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_martes.png') }}" width="600px" />
+                    </li>
+                    <li id="slide3">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_miercoles.png') }}" width="600px" />
+                    </li>
+                    <li id="slide4">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_jueves.png') }}" width="600px" />
+                    </li>
+                    <li id="slide5">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_viernes.png') }}" width="600px" />
+                    </li>
+                    <li id="slide6">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_sabado.png') }}" width="600px" />
+                    </li>
+                    <li id="slide7">
+                        <img src="{{ url_for('static',  filename='imagen/orden/orden_domingo.png') }}" width="600px" />
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
