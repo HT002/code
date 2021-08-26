@@ -8,6 +8,6 @@ function inicializar_mensaje_error(mensaje){
         allowOutsideClick: true,
         allowEscapeKey: true,
         allowEnterKey: true,
-        stopKeydownPropagation: false,
+        stopKeydownPropagation: false
     });
 }

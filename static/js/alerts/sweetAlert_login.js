@@ -11,6 +11,6 @@ function inicializar_mensaje_login(mensaje){
         icon: 'success',
         title: 'Bienvenido',
         html: mensaje,
-        background: '#eee'
+        background: '#ddd'
       })
 }

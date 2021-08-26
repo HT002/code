@@ -14,6 +14,21 @@ Apuntarse
         <div class="padded center">
            <form class="menu-form" method="POST" autocomplete="off">
                 <div class="row">
+                    <!--{#
+                    {% for (kdia, dia) in dias %}
+                        <div class="day seven">
+                            <h3 class="center">{{dia}}</h3> <hr>
+                            {% for (kturno, turno) in turnos%}
+                                <div>
+                                    <input type="checkbox" name="{{kturno}}_{{kdia}}" 
+                                    id="{{kturno}}_{{kdia}}" value="1">
+                                    <label for="{{kturno}}_{{kdia}}">{{turno}}</label> 
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    #}-->
+
                     <div class="day seven">
                         <h3 class="center">Lunes</h3> <hr>
                         <input type="checkbox" name="desayuno_lunes" id="desayuno_lunes" value="1">
