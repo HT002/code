@@ -23,7 +23,7 @@ class Deporte(db.Model):
 
 class Zona(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    identificador_zona = db.Column(db.String(20), nullable=False)
+    identificador_zona = db.Column(db.String(20), nullable=False, unique=True)
     id_deporte = db.Column(db.Integer, db.ForeignKey('deporte.id'),nullable=False)
 
 class Dia_comida(db.Model):
