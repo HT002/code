@@ -3,7 +3,7 @@ from app.auth import login_required
 from flask_login import login_user, logout_user, login_required, current_user
 import functools
 from sqlalchemy import *
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, time, timedelta
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
 )
@@ -44,9 +44,10 @@ def comida():
             index += 1
 
         # La siguiente consulta deberia ponerla en lugar de 'hay_fechas' para en una sola consulta traerme todo.
-        # Me devuelve una lista con strings: "dia_comida 1". Necesito que me devuelva todas las columnas como un objeto.
-        fechas_proxima_semana = Dia_comida.query.filter(Dia_comida.fecha.between(start_date, end_date)).all() 
-        tiene_reserva = Reserva_comida.query.filter(and_(Reserva_comida.id==fechas_proxima_semana.id, Reserva_comida.id_user==current_user.id)).firt()
+        start_date2 = today + timedelta(days= (7 - today.weekday()))
+        fechas_proxima_semana = Dia_comida.query.filter(Dia_comida.fecha.between(start_date2, end_date)).all()
+
+        tiene_reserva = Reserva_comida.query.filter(and_(Reserva_comida.id==fechas_proxima_semana[0].id, Reserva_comida.id_user==current_user.id)).first()
 
         if tiene_reserva:
             flash('Usted ya ha realiazo las reservas de la semana.', category='error')
@@ -68,7 +69,7 @@ def comida():
                         db.session.commit()
                         flash('Reserva realizada.', category='success')
     
-    if date.today().weekday() <= 5: #Hay que poner un 2. El 5 es para las pruebas
+    if date.today().weekday() <= 6: #Hay que poner un 2. El 5 es para las pruebas
         return render_template('content/apuntarse.html', user=current_user, context=context) 
     else:
         return render_template('content/reserva_cerrada.html', user=current_user)
