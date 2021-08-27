@@ -370,7 +370,7 @@ ul.slider {
 .menu ul li button {
     display: inline-block;
     color: white;
-    background-color: grey;
+    background-color: rgb(150, 150, 150);
     margin: 2px;
     border-radius: 100px;
     width: 40px;
