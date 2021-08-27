@@ -20,7 +20,7 @@ Apuntarse
                             {% for (kturno, turno) in context.turnos %}
                                 <div>
                                     <input type="checkbox" name="{{kturno}}_{{kdia}}" 
-                                    id="{{kturno}}_{{kdia}}" value="1">
+                                    id="{{kturno}}_{{kdia}}" value="{{kturno}}_{{kdia}}">
                                     <label for="{{kturno}}_{{kdia}}">{{turno}}</label> 
                                 </div>
                             {% endfor %}

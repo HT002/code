@@ -21,13 +21,12 @@ def comida():
     turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
     context = {'dias': dias, 'turnos': turnos}
 
-    today = date.today()
-    start_date = today + timedelta(days= (7 - today.weekday()))
-    end_date = start_date + timedelta(days=7)
-    delta = timedelta(days=1)
-
     if request.method == 'POST':
         context = context
+        today = date.today()
+        start_date = today + timedelta(days= (7 - today.weekday()))
+        end_date = start_date + timedelta(days=7)
+        delta = timedelta(days=1)
         hay_fechas = Dia_comida.query.filter_by(fecha=start_date).first()
         relacion_dias_fechas = {}
         index=0
@@ -42,28 +41,29 @@ def comida():
             start_date += delta
             index += 1
         
+        # Lo he hecho respecto a esto: puedo meter un identificador_dia en Dia_comida para no necesitar la relacion_dias_fechas y buscar por el nombre del dia.
+        # ¿O es información que sobra en la base de datos pudiendo hacerlo aquí?
+
         # raise Exception(relacion_dias_fechas) ## me dice: IndexError: list index out of range
     
-        turnos = Turno.query(Turno.tipo_turno)
+        turnos = Turno.query(Turno.id, Turno.tipo_turno)
         fechas = Dia_comida.query(Dia_comida.id, Dia_comida.fecha)
-        turno_dia = []
+        index2 = 0
 
         for t in turnos.tipo_turno:
-            for d in context['dias'][index][0]:
-                turno_dia.append(t + '_' + d)
-                index += 1
+            for d in context['dias'][index2][0]:
+                index2 += 1
+                turno_dia = (t + '_' + d)
+                recibido = request.form[turno_dia]
+                if recibido:
+                    recibido_separado = recibido.split('_')
+                    id_turno = Turno.query.filter_by(tipo_turno=recibido_separado[0]).first()
+                    id_dia = Dia_comida.query.filter_by(identificador_dia=recibido_separado[1]).first()
+                    reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
+                    db.session.add(reserva_comida)
+                    db.session.commit()
+                    flash('Reserva realizada.', category='success')
 
-        valores_registro = {}
-        valor_recibido = None
-        for tp in turno_dia:
-            valor_recibido = request.form[tp]
-            if valor_recibido:
-                valores_separados = valor_recibido.split('_')
-                valores_registro = valores_separados 
-                # NO SE COMO HACER PARA METERLE LOS VALORES SEPARADOS COMO UN DICCIONARIO
-
-        # FALTA HACER LA COMPARATIVA DE QUE ID TURNO ES COMPARANDO CON "turnos" Y QUE ID DIA COMIDA ES CON LA FECHA
-        # reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=, id_dia_comida=)
         return redirect(url_for('main.menu'))
     
     if date.today().weekday() <= 5: #Hay que poner un 2. El 5 es para las pruebas
