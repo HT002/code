@@ -14,56 +14,73 @@ S. de seguridad
                 <div class="menu">
                     <ul>
                         <li>
-                            <a href="#slide1">L</a>
+                            <button id="slide1">L</button>
                         </li>
                         <li>
-                            <a href="#slide2">M</a>
+                            <button id="slide2">M</button>
                         </li>
                         <li>
-                            <a href="#slide3">X</a>
+                            <button id="slide3">X</button>
                         </li>
                         <li>
-                            <a href="#slide4">J</a>
+                            <button id="slide4">J</button>
                         </li>
                         <li>
-                            <a href="#slide5">V</a>
+                            <button id="slide5">V</button>
                         </li>
                         <li>
-                            <a href="#slide6">S</a>
+                            <button id="slide6">S</button>
                         </li>
                         <li>
-                            <a href="#slide7">D</a>
+                            <button id="slide7">D</button>
                         </li>
                     </ul>
                 </div>
             </div>
             <div id="contacto" class="right padded servicios_seg">
-                <ul class="slider">
-                    <li id="slide1">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_lunes.png') }}" width="650px" />
-                    </li>
-                    <li id="slide2">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_martes.png') }}" width="650px" />
-                    </li>
-                    <li id="slide3">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_miercoles.png') }}" width="650px" />
-                    </li>
-                    <li id="slide4">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_jueves.png') }}" width="650px" />
-                    </li>
-                    <li id="slide5">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_viernes.png') }}" width="650px" />
-                    </li>
-                    <li id="slide6">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_sabado.png') }}" width="650px" />
-                    </li>
-                    <li id="slide7">
-                        <img src="{{ url_for('static',  filename='imagen/seguridad/seguridad_domingo.png') }}" width="650px" />
-                    </li>
-                </ul>
+                <img id="servicio" src="{{ url_for('static',  filename='imagen/seguridad/seguridad_lunes.png') }}" width="600px" />
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
+<script>
+    let img = document.querySelector('#servicio');
+    let slide1 = document.querySelector('#slide1');
+    let slide2 = document.querySelector('#slide2');
+    let slide3 = document.querySelector('#slide3');
+    let slide4 = document.querySelector('#slide4');
+    let slide5 = document.querySelector('#slide5');
+    let slide6 = document.querySelector('#slide6');
+    let slide7 = document.querySelector('#slide7');
+
+    slide1.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_lunes.png') }}"
+    })
+
+    slide2.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_martes.png') }}"
+    })
+
+    slide3.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_miercoles.png') }}"
+    })
+
+    slide4.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_jueves.png') }}"
+    })
+
+    slide5.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_viernes.png') }}"
+    })
+
+    slide6.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_sabado.png') }}"
+    })
+
+    slide7.addEventListener('click', () => {
+        img.src = "{{ url_for('static',  filename='imagen/seguridad/seguridad_domingo.png') }}"
+    })
+</script>
+
+{% endblock %}
