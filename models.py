@@ -33,7 +33,6 @@ class Dia_comida(db.Model):
 class Turno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tipo_turno = db.Column(db.String(10), nullable=False)
-    id_dia_comida = db.Column(db.Integer, db.ForeignKey('dia_comida.id'), nullable=False)
 
 class Reserva_deporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +44,7 @@ class Reserva_comida(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     id_turno = db.Column(db.Integer, db.ForeignKey('turno.id'), nullable=False)
+    id_dia_comida = db.Column(db.Integer, db.ForeignKey('dia_comida.id'), nullable=False)
 
 class Sugerencia(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -19,8 +19,7 @@ bp = Blueprint('data', __name__, url_prefix='/data')
 def comida():
     dias = [('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')]
     turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
-
-    # Falta sacar las fechas de cada dia de la semana que viene en 'fechas'
+    context = {'dias': dias, 'turnos': turnos}
 
     today = date.today()
     start_date = today + timedelta(days= (7 - today.weekday()))
@@ -28,34 +27,26 @@ def comida():
     delta = timedelta(days=1)
 
     if request.method == 'POST':
-
-        es_nuevo = query(start_date)
-          
+        context = context
+        hay_fechas = Dia_comida.query.filter_by(fecha=start_date).first()
         relacion_dias_fechas = {}
         index=0
-        while start_date <= end_date:
-            if es_nuevo:        
-                registro_dias = Dia_comida(fecha=start_date)
-                db.session.add(registro_dias)
-                
 
-            relacion_dias_fechas[dias[index][0]] = start_date
-            start_date += delta
-            index += 1
-
-        if es_nuevo:
-            db.session.commit()
+        # while start_date <= end_date:  
+        #     if hay_fechas is None:        
+        #         registro_dias = Dia_comida(fecha=start_date)
+        #         db.session.add(registro_dias)
+        #         db.session.commit()
+        #     
+        #     relacion_dias_fechas[context['dias'][index][0]] = start_date
+        #     start_date += delta
+        #     index += 1
+        
+        # raise Exception(relacion_dias_fechas) ## me dice: IndexError: list index out of range
     
-        raise Exception('Ha ocurrido un error al crear los días de comida.')
-
-
-        
-        
-        reserva = []
-        for kdia, dia in dias:
-
-            reserva.append(kdia)
-        
+        turnos = Turno.query.all()
+        dias = Dia_comida.query.all()
+        # ahora tengo que recoger todos los checks que me envia el usuario y ver si son nulos
 
         # c.execute(
         #     'select id from dia_comida where fecha = %s', (now.date(),)
@@ -77,11 +68,8 @@ def comida():
 
         return redirect(url_for('main.menu'))
     
-    if date.today().weekday() <= 2:
-        return render_template('content/apuntarse.html', user=current_user, dias = dias, turnos = turnos)
-
-        context = {'user':current_user, 'dias' : dias, 'turnos' : turnos}
-        return render_template('content/apuntarse.html', context=context) 
+    if date.today().weekday() <= 5:
+        return render_template('content/apuntarse.html', user=current_user, context=context) 
     else:
         return render_template('content/reserva_cerrada.html', user=current_user)
 

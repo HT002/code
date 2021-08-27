@@ -14,10 +14,10 @@ Apuntarse
         <div class="padded center">
            <form class="menu-form" method="POST" autocomplete="off">
                 <div class="row">
-                    {% for (kdia, dia) in dias %}
+                    {% for (kdia, dia) in context.dias %}
                         <div class="day seven">
                             <h3 class="center">{{dia}}</h3> <hr>
-                            {% for (kturno, turno) in turnos%}
+                            {% for (kturno, turno) in context.turnos %}
                                 <div>
                                     <input type="checkbox" name="{{kturno}}_{{kdia}}" 
                                     id="{{kturno}}_{{kdia}}" value="1">
