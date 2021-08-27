@@ -25,40 +25,41 @@ def comida():
         context = context
         today = date.today()
         start_date = today + timedelta(days= (7 - today.weekday()))
-        end_date = start_date + timedelta(days=7)
+        end_date = start_date + timedelta(days=6)
         delta = timedelta(days=1)
         hay_fechas = Dia_comida.query.filter_by(fecha=start_date).first()
         relacion_dias_fechas = {}
         index=0
-
         while start_date <= end_date:  
             if hay_fechas is None:        
                 registro_dias = Dia_comida(fecha=start_date)
                 db.session.add(registro_dias)
                 db.session.commit()
-            
+
             relacion_dias_fechas[context['dias'][index][0]] = start_date
+
             start_date += delta
             index += 1
-        
-        # Lo he hecho respecto a esto: puedo meter un identificador_dia en Dia_comida para no necesitar la relacion_dias_fechas y buscar por el nombre del dia.
-        # ¿O es información que sobra en la base de datos pudiendo hacerlo aquí?
+
 
         # raise Exception(relacion_dias_fechas) ## me dice: IndexError: list index out of range
-    
-        turnos = Turno.query(Turno.id, Turno.tipo_turno)
-        fechas = Dia_comida.query(Dia_comida.id, Dia_comida.fecha)
+
+        try:
+            turnos = Turno.query.all()
+            fechas = Dia_comida.query.filter_by(fecha=Dia_comida.fecha)
+        except Exception as e:
+            raise Exception(e)
         index2 = 0
 
-        for t in turnos.tipo_turno:
-            for d in context['dias'][index2][0]:
+        for turno in turnos:
+            for d in dias[index2]:
                 index2 += 1
-                turno_dia = (t + '_' + d)
+                turno_dia = (turno.tipo_turno + '_' + d[0])
                 recibido = request.form[turno_dia]
                 if recibido:
-                    recibido_separado = recibido.split('_')
-                    id_turno = Turno.query.filter_by(tipo_turno=recibido_separado[0]).first()
-                    id_dia = Dia_comida.query.filter_by(identificador_dia=recibido_separado[1]).first()
+                    id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
+                    fecha_elegida = relacion_dias_fechas[d[0]]
+                    id_dia = Dia_comida.query.filter_by(fecha=fecha_elegida).first()
                     reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
                     db.session.add(reserva_comida)
                     db.session.commit()
