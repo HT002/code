@@ -2,6 +2,7 @@
 from app.auth import login_required
 from flask_login import login_user, logout_user, login_required, current_user
 import functools
+from sqlalchemy import *
 from datetime import datetime, date, timedelta
 from flask import (
     Blueprint, flash, g, render_template, request, url_for, session, redirect
@@ -26,6 +27,7 @@ def comida():
         today = date.today()
         start_date = today + timedelta(days= (7 - today.weekday()))
         end_date = start_date + timedelta(days=6)
+    
         delta = timedelta(days=1)
         hay_fechas = Dia_comida.query.filter_by(fecha=start_date).first()
         relacion_dias_fechas = {}
@@ -41,31 +43,30 @@ def comida():
             start_date += delta
             index += 1
 
+        # La siguiente consulta deberia ponerla en lugar de 'hay_fechas' para en una sola consulta traerme todo.
+        # Me devuelve una lista con strings: "dia_comida 1". Necesito que me devuelva todas las columnas como un objeto.
+        fechas_proxima_semana = Dia_comida.query.filter(Dia_comida.fecha.between(start_date, end_date)).all() 
+        tiene_reserva = Reserva_comida.query.filter(and_(Reserva_comida.id==fechas_proxima_semana.id, Reserva_comida.id_user==current_user.id)).firt()
 
-        # raise Exception(relacion_dias_fechas) ## me dice: IndexError: list index out of range
-
-        try:
+        if tiene_reserva:
+            flash('Usted ya ha realiazo las reservas de la semana.', category='error')
+        else:
             turnos = Turno.query.all()
-            fechas = Dia_comida.query.filter_by(fecha=Dia_comida.fecha)
-        except Exception as e:
-            raise Exception(e)
-        index2 = 0
+            index2 = 0
 
-        for turno in turnos:
-            for d in dias[index2]:
-                index2 += 1
-                turno_dia = (turno.tipo_turno + '_' + d[0])
-                recibido = request.form[turno_dia]
-                if recibido:
-                    id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
-                    fecha_elegida = relacion_dias_fechas[d[0]]
-                    id_dia = Dia_comida.query.filter_by(fecha=fecha_elegida).first()
-                    reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
-                    db.session.add(reserva_comida)
-                    db.session.commit()
-                    flash('Reserva realizada.', category='success')
-
-        return redirect(url_for('main.menu'))
+            for turno in turnos:
+                for dia in dias[index2]:
+                    index2 += 1
+                    turno_dia = (turno.tipo_turno + '_' + dia)
+                    recibido = request.form[turno_dia]
+                    if recibido:
+                        id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
+                        fecha_elegida = relacion_dias_fechas[dia[0]]
+                        id_dia = Dia_comida.query.filter_by(fecha=fecha_elegida).first()
+                        reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
+                        db.session.add(reserva_comida)
+                        db.session.commit()
+                        flash('Reserva realizada.', category='success')
     
     if date.today().weekday() <= 5: #Hay que poner un 2. El 5 es para las pruebas
         return render_template('content/apuntarse.html', user=current_user, context=context) 
