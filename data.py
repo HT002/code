@@ -58,9 +58,8 @@ def comida():
             for turno in turnos:
                 for dia in dias:
                     turno_dia = (turno.tipo_turno + '_' + dia[0])
-                    # raise Exception(turno_dia in request.form)
                     if turno_dia in request.form:
-                        recibido = request.form[turno_dia] #Esto me da error cuando no marco el checkbox. Dice que el servidor no entiende la peticion. 
+                        recibido = request.form[turno_dia] 
                         if recibido:
                             id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
                             fecha_elegida = relacion_dias_fechas[dia[0]]
@@ -75,7 +74,7 @@ def comida():
             else:
                 flash('No has marcado nada.', category='error')
     
-    if date.today().weekday() <= 6: #Hay que poner un 2. 
+    if date.today().weekday() <= 2: 
         return render_template('content/apuntarse.html', user=current_user, context=context) 
     else:
         return render_template('content/reserva_cerrada.html', user=current_user)
@@ -103,7 +102,7 @@ def deporte():
                 db.session.add(reserva_deporte)
                 db.session.commit()
                 flash('Reserva realizada.', category='success')
-            except Exception as e:
+            except:
                 raise Exception('Ha ocurrido un error al guardar la reserva de deporte.')
         else:
             flash('No hay plazas libres para esa fecha.', category='error')
