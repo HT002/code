@@ -2,6 +2,7 @@
 from app.auth import login_required
 from flask_login import login_user, logout_user, login_required, current_user
 import functools
+import copy
 from sqlalchemy import *
 from datetime import datetime, date, time, timedelta
 from flask import (
@@ -22,12 +23,14 @@ def comida():
     turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
     context = {'dias': dias, 'turnos': turnos}
 
+    today = date.today()
+    start_date = today + timedelta(days= (7 - today.weekday()))
+    end_date = start_date + timedelta(days=6)
+
+    context['fecha_inicio'] = copy.copy(start_date)
+    context['fecha_fin'] = copy.copy(end_date)
+
     if request.method == 'POST':
-        context = context
-        today = date.today()
-        start_date = today + timedelta(days= (7 - today.weekday()))
-        end_date = start_date + timedelta(days=6)
-    
         delta = timedelta(days=1)
         hay_fechas = Dia_comida.query.filter_by(fecha=start_date).first()
         relacion_dias_fechas = {}
@@ -38,38 +41,41 @@ def comida():
                 db.session.add(registro_dias)
                 db.session.commit()
 
-            relacion_dias_fechas[context['dias'][index][0]] = start_date
+            relacion_dias_fechas[dias[index][0]] = start_date
 
             start_date += delta
             index += 1
-
-        # La siguiente consulta deberia ponerla en lugar de 'hay_fechas' para en una sola consulta traerme todo.
+        
         start_date2 = today + timedelta(days= (7 - today.weekday()))
         fechas_proxima_semana = Dia_comida.query.filter(Dia_comida.fecha.between(start_date2, end_date)).all()
-
-        tiene_reserva = Reserva_comida.query.filter(and_(Reserva_comida.id==fechas_proxima_semana[0].id, Reserva_comida.id_user==current_user.id)).first()
+        tiene_reserva = Reserva_comida.query.filter(and_(Reserva_comida.id_dia_comida>=fechas_proxima_semana[0].id, Reserva_comida.id_dia_comida<=fechas_proxima_semana[6].id, Reserva_comida.id_user==current_user.id)).first()
 
         if tiene_reserva:
-            flash('Usted ya ha realiazo las reservas de la semana.', category='error')
+            flash('Usted ya ha reservado para esta semana.', category='error')
         else:
             turnos = Turno.query.all()
-            index2 = 0
-
+            check_reservas_guardadas = False
             for turno in turnos:
-                for dia in dias[index2]:
-                    index2 += 1
-                    turno_dia = (turno.tipo_turno + '_' + dia)
-                    recibido = request.form[turno_dia]
-                    if recibido:
-                        id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
-                        fecha_elegida = relacion_dias_fechas[dia[0]]
-                        id_dia = Dia_comida.query.filter_by(fecha=fecha_elegida).first()
-                        reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
-                        db.session.add(reserva_comida)
-                        db.session.commit()
-                        flash('Reserva realizada.', category='success')
+                for dia in dias:
+                    turno_dia = (turno.tipo_turno + '_' + dia[0])
+                    # raise Exception(turno_dia in request.form)
+                    if turno_dia in request.form:
+                        recibido = request.form[turno_dia] #Esto me da error cuando no marco el checkbox. Dice que el servidor no entiende la peticion. 
+                        if recibido:
+                            id_turno = Turno.query.filter_by(tipo_turno=turno.tipo_turno).first()
+                            fecha_elegida = relacion_dias_fechas[dia[0]]
+                            id_dia = Dia_comida.query.filter_by(fecha=fecha_elegida).first()
+                            reserva_comida = Reserva_comida(id_user=current_user.id, id_turno=id_turno.id, id_dia_comida=id_dia.id)
+                            db.session.add(reserva_comida)
+                            check_reservas_guardadas = True
+
+            if check_reservas_guardadas:              
+                db.session.commit()
+                flash('Reserva realizada.', category='success')
+            else:
+                flash('No has marcado nada.', category='error')
     
-    if date.today().weekday() <= 6: #Hay que poner un 2. El 5 es para las pruebas
+    if date.today().weekday() <= 6: #Hay que poner un 2. 
         return render_template('content/apuntarse.html', user=current_user, context=context) 
     else:
         return render_template('content/reserva_cerrada.html', user=current_user)

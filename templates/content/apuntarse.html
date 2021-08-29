@@ -9,7 +9,7 @@ Apuntarse
     <div class="vs-menu">
         <div class="">
             <h1 class="center">SERVICIO DE COMIDAS DE LA ACLOG</h1>
-            <h2 class="center">Semana del 16/08/21 al 22/08/21</h2>
+            <h2 class="center">Semana del {{ context.fecha_inicio.strftime('%d-%m-%Y') }}</h2>
         </div>
         <div class="padded center">
            <form class="menu-form" method="POST" autocomplete="off">

@@ -1,7 +1,7 @@
 function inicializar_mensaje_login(mensaje){
     const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: 'bottom-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true
@@ -9,7 +9,7 @@ function inicializar_mensaje_login(mensaje){
       
       Toast.fire({
         icon: 'success',
-        title: 'Bienvenido',
+        title: 'Éxito',
         html: mensaje,
         background: '#ddd'
       })

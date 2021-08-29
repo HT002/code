@@ -159,6 +159,10 @@ a.btn {
     width: calc(100% - 40px);
 }
 
+.contact-form .btn {
+    width: calc(100% - 20px) !important;
+}
+
 .contact-form textarea {
     font-family: 'Rubik', sans-serif;
     border: none;

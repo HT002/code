@@ -86,6 +86,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('Sesión cerrada.', category='login')
     return redirect(url_for("main.index"))
 
 @bp.before_app_request
