@@ -72,7 +72,7 @@ def comida():
                 db.session.commit()
                 flash('Reserva realizada.', category='success')
             else:
-                flash('No has marcado nada.', category='error')
+                flash('No has seleccionado nada.', category='error')
     
     if date.today().weekday() <= 2: 
         return render_template('content/apuntarse.html', user=current_user, context=context) 
