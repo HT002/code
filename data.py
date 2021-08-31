@@ -19,7 +19,7 @@ bp = Blueprint('data', __name__, url_prefix='/data')
 @bp.route('/comida', methods=['GET', 'POST'])
 @login_required
 def comida():
-    dias = [('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miercoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sabado'), ('domingo', 'Domingo')]
+    dias = [('lunes', 'Lunes'), ('martes', 'Martes'), ('miercoles', 'Miércoles'), ('jueves', 'Jueves'), ('viernes', 'Viernes'), ('sabado', 'Sábado'), ('domingo', 'Domingo')]
     turnos = [('desayuno', 'Desayuno'), ('comida', 'Comida'), ('cena', 'Cena')]
     context = {'dias': dias, 'turnos': turnos}
 
